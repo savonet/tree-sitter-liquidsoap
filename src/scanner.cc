@@ -93,6 +93,8 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
   lookahead_string += lookahead;
 
   if (eof) {
+    if (state == IN_INLINE_COMMENT || state == IN_INLINE_COMMENT_END)
+      ACCEPT_TOKEN(COMMENT);
     config->reset();
     END_STATE();
   }

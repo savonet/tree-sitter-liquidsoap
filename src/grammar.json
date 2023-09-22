@@ -5513,6 +5513,12 @@
       "name": "uminus"
     }
   ],
-  "inline": ["varlpar", "varlbra", "subfield_lbra", "subfield_lpar"],
+  "inline": [
+    "varlpar",
+    "varlbra",
+    "subfield_lbra",
+    "subfield_lpar"
+  ],
   "supertypes": []
 }
+
