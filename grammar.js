@@ -636,7 +636,7 @@ module.exports = grammar({
 
     coerce: $ => seq("(", $._expr, alias(":", $.op), $.type, ")"),
     parens: $ => seq("(", $._expr, ")"),
-    not: $ => prec("not", seq(alias("not", $.op), $._expr)),
+    not: $ => prec("not", seq("not", $._expr)),
     invoke: $ =>
       choice(
         seq($._expr, ".", $._invoked),

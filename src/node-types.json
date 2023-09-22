@@ -6166,7 +6166,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
@@ -6267,10 +6267,6 @@
         },
         {
           "type": "not",
-          "named": true
-        },
-        {
-          "type": "op",
           "named": true
         },
         {
@@ -9066,6 +9062,10 @@
   },
   {
     "type": "m",
+    "named": false
+  },
+  {
+    "type": "not",
     "named": false
   },
   {

@@ -337,7 +337,7 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_elsif] = "elsif",
   [anon_sym_else] = "else",
   [anon_sym_COLON_EQ] = "op",
-  [anon_sym_not] = "op",
+  [anon_sym_not] = "not",
   [anon_sym_QMARK_DOT] = "\?.",
   [anon_sym_COLON_COLON] = "op",
   [anon_sym_begin] = "begin",
@@ -570,7 +570,7 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_elsif] = anon_sym_elsif,
   [anon_sym_else] = anon_sym_else,
   [anon_sym_COLON_EQ] = sym__bin1,
-  [anon_sym_not] = sym__bin1,
+  [anon_sym_not] = anon_sym_not,
   [anon_sym_QMARK_DOT] = anon_sym_QMARK_DOT,
   [anon_sym_COLON_COLON] = sym__bin1,
   [anon_sym_begin] = anon_sym_begin,
@@ -1045,7 +1045,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
   [anon_sym_not] = {
     .visible = true,
-    .named = true,
+    .named = false,
   },
   [anon_sym_QMARK_DOT] = {
     .visible = true,

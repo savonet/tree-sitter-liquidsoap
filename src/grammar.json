@@ -4594,13 +4594,8 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "STRING",
-              "value": "not"
-            },
-            "named": true,
-            "value": "op"
+            "type": "STRING",
+            "value": "not"
           },
           {
             "type": "SYMBOL",
