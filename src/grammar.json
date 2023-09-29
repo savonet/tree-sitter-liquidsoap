@@ -189,7 +189,7 @@
     },
     "_decimal_integer": {
       "type": "PATTERN",
-      "value": "[\\d][_\\d]*"
+      "value": "[\\d][\\d_]*"
     },
     "_hex_integer": {
       "type": "PATTERN",
@@ -197,7 +197,7 @@
     },
     "_oct_integer": {
       "type": "PATTERN",
-      "value": "0[oO][0-7]+"
+      "value": "0[oO][0-7_]+"
     },
     "integer": {
       "type": "CHOICE",
@@ -225,7 +225,7 @@
         },
         {
           "type": "PATTERN",
-          "value": "[\\d]*\\.[\\d]+"
+          "value": "([\\d][\\d_]*?)\\.[\\d][\\d_]*"
         }
       ]
     },
