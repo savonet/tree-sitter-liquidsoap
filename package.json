@@ -4,7 +4,7 @@
   "description": "Tree sitter tools for the liquidsoap language",
   "main": "bindings/node",
   "scripts": {
-    "test": "./tests/run.sh",
+    "test": "./tests/run.sh"
   },
   "author": "",
   "license": "ISC",
