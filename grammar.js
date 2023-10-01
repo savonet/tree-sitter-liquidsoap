@@ -76,10 +76,10 @@ module.exports = grammar({
     float: $ =>
       choice(
         $._float_no_lbra,
-	/([\d][\d_]*?)\.[\d][\d_]*/
+	/([\d][\d_]*)?\.[\d][\d_]*/
       ),
 
-    version: $ => /[\d]+\.[\d]+\.[\d]+/,
+    version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
 
     bool: $ => choice("true", "false"),
 
