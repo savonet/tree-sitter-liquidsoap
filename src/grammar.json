@@ -2186,8 +2186,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "..."
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "..."
+          },
+          "named": true,
+          "value": "op"
         },
         {
           "type": "CHOICE",
@@ -2421,8 +2426,13 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "STRING",
-                "value": "..."
+                "type": "ALIAS",
+                "content": {
+                  "type": "STRING",
+                  "value": "..."
+                },
+                "named": true,
+                "value": "op"
               },
               {
                 "type": "CHOICE",
@@ -3776,8 +3786,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "..."
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "..."
+          },
+          "named": true,
+          "value": "op"
         },
         {
           "type": "CHOICE",
@@ -4507,8 +4522,13 @@
               "value": "{"
             },
             {
-              "type": "STRING",
-              "value": "..."
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "..."
+              },
+              "named": true,
+              "value": "op"
             },
             {
               "type": "SYMBOL",
@@ -4536,8 +4556,13 @@
               "value": ","
             },
             {
-              "type": "STRING",
-              "value": "..."
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "..."
+              },
+              "named": true,
+              "value": "op"
             },
             {
               "type": "SYMBOL",

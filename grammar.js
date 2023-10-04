@@ -348,7 +348,7 @@ module.exports = grammar({
     _pattern_list: $ =>
       choice($._pattern, seq($._pattern_list, ",", $._pattern)),
 
-    spread: $ => seq("...", optional($._optvar)),
+    spread: $ => seq(alias("...", $.op), optional($._optvar)),
 
     _pattern_list_with_spread: $ =>
       choice(
@@ -379,7 +379,7 @@ module.exports = grammar({
       prec.left(
         1,
         choice(
-          seq("...", optional($._optvar)),
+          seq(alias("...", $.op), optional($._optvar)),
           seq($._meth_pattern_el, ",", $._meth_spread_list)
         )
       ),
@@ -534,7 +534,7 @@ module.exports = grammar({
         "%endif"
       ),
 
-    _inner_list_spread: $ => seq("...", optional($._expr)),
+    _inner_list_spread: $ => seq(alias("...", $.op), optional($._expr)),
 
     _inner_list_item: $ =>
       choice(alias($._inner_list_spread, $.spread), $._expr),
@@ -632,8 +632,8 @@ module.exports = grammar({
             "}"
           )
         ),
-        seq("{", "...", $._expr, "}"),
-        seq("{", $._record, ",", "...", $._expr, "}"),
+        seq("{", alias("...", $.op), $._expr, "}"),
+        seq("{", $._record, ",", alias("...", $.op), $._expr, "}"),
         seq("{", $._record, optional(","), "}"),
         seq("{", "}")
       ),
