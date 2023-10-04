@@ -5012,11 +5012,6 @@
     }
   },
   {
-    "type": "integer",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "invoke",
     "named": true,
     "fields": {},
@@ -9449,6 +9444,10 @@
   {
     "type": "if_end",
     "named": false
+  },
+  {
+    "type": "integer",
+    "named": true
   },
   {
     "type": "json.object",

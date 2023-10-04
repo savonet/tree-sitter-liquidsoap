@@ -65,13 +65,8 @@ module.exports = grammar({
 
     _optvar: $ => choice("_", $.var),
 
-    _decimal_integer: $ => /[\d][\d_]*/,
-
-    _hex_integer: $ => /0[xX][\da-fA-F_]+/,
-
-    _oct_integer: $ => /0[oO][0-7_]+/,
-
-    integer: $ => choice($._decimal_integer, $._hex_integer, $._oct_integer),
+    integer: $ =>
+      token(choice(/[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
 
     float: $ => choice($._float_no_lbra, /([\d][\d_]*)?\.[\d][\d_]*/),
 
