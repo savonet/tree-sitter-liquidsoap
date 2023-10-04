@@ -282,21 +282,21 @@ module.exports = grammar({
           ")",
           optional("="),
           alias($._exprs, $.definition),
-          "end"
+          alias("end", "def_end")
         ),
         seq(
           $._def,
           field("defined", $._optvar),
           optional("="),
           alias($._exprs, $.definition),
-          "end"
+          alias("end", "def_end")
         ),
         seq(
           $._def,
           field("defined", $.subfield),
           optional("="),
           alias($._exprs, $.definition),
-          "end"
+          alias("end", "def_end")
         ),
         seq(
           $._def,
@@ -308,7 +308,7 @@ module.exports = grammar({
           ),
           optional("="),
           alias($._exprs, $.definition),
-          "end"
+          alias("end", "def_end")
         )
       ),
 
@@ -594,7 +594,7 @@ module.exports = grammar({
           )
         ),
         optional(seq("else", alias($._exprs, $.if_else))),
-        "end"
+        alias("end", "if_end")
       ),
     inline_if: $ =>
       prec.right(
@@ -657,9 +657,10 @@ module.exports = grammar({
         seq($.varlbra, "[", $._expr, "]"),
         seq($._expr, ".", $.varlbra, "[", $._expr, "]")
       ),
-    block: $ => seq("begin", $._exprs, "end"),
+    block: $ => seq("begin", $._exprs, alias("end", "block_end")),
     simple_fun: $ => seq("{", $._simple_fun_body, "}"),
-    while: $ => seq("while", $._expr, "do", $._exprs, "end"),
+    while: $ =>
+      seq("while", $._expr, "do", $._exprs, alias("end", "while_end")),
     for: $ =>
       choice(
         seq(
@@ -671,7 +672,7 @@ module.exports = grammar({
           field("to", $._expr),
           "do",
           field("do", $._exprs),
-          "end"
+          alias("end", "for_end")
         ),
         seq(
           "for",
@@ -680,7 +681,7 @@ module.exports = grammar({
           field("iterator", $._expr),
           "do",
           field("do", $._exprs),
-          "end"
+          alias("end", "for_end")
         )
       ),
     coalesce: $ =>
@@ -696,7 +697,7 @@ module.exports = grammar({
           field("in", $.list),
           "do",
           alias($._exprs, $.try_do),
-          "end"
+          alias("end", "try_end")
         ),
         seq(
           "try",
@@ -705,7 +706,7 @@ module.exports = grammar({
           field("catch", $._optvar),
           "do",
           alias($._exprs, $.try_do),
-          "end"
+          alias("end", "for_end")
         )
       ),
 

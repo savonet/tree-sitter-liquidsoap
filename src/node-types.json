@@ -9166,6 +9166,10 @@
     "named": false
   },
   {
+    "type": "block_end",
+    "named": false
+  },
+  {
     "type": "catch",
     "named": false
   },
@@ -9175,6 +9179,10 @@
   },
   {
     "type": "def",
+    "named": false
+  },
+  {
+    "type": "def_end",
     "named": false
   },
   {
@@ -9194,10 +9202,6 @@
     "named": true
   },
   {
-    "type": "end",
-    "named": false
-  },
-  {
     "type": "eval",
     "named": false
   },
@@ -9210,6 +9214,10 @@
     "named": false
   },
   {
+    "type": "for_end",
+    "named": false
+  },
+  {
     "type": "fun",
     "named": false
   },
@@ -9219,6 +9227,10 @@
   },
   {
     "type": "if",
+    "named": false
+  },
+  {
+    "type": "if_end",
     "named": false
   },
   {
@@ -9286,6 +9298,10 @@
     "named": false
   },
   {
+    "type": "try_end",
+    "named": false
+  },
+  {
     "type": "uminus",
     "named": true
   },
@@ -9299,6 +9315,10 @@
   },
   {
     "type": "while",
+    "named": false
+  },
+  {
+    "type": "while_end",
     "named": false
   },
   {
