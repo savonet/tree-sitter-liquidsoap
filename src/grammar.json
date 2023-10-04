@@ -774,6 +774,23 @@
         }
       ]
     },
+    "string_interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expr"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
     "string": {
       "type": "CHOICE",
       "members": [
@@ -803,8 +820,19 @@
                 "type": "IMMEDIATE_TOKEN",
                 "content": {
                   "type": "PATTERN",
-                  "value": "[^\\\\\"]+"
+                  "value": "[^\\\\\"#]+"
                 }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "#[^{\"]?"
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "string_interpolation"
               },
               {
                 "type": "SYMBOL",

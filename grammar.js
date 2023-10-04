@@ -73,11 +73,7 @@ module.exports = grammar({
 
     integer: $ => choice($._decimal_integer, $._hex_integer, $._oct_integer),
 
-    float: $ =>
-      choice(
-        $._float_no_lbra,
-	/([\d][\d_]*)?\.[\d][\d_]*/
-      ),
+    float: $ => choice($._float_no_lbra, /([\d][\d_]*)?\.[\d][\d_]*/),
 
     version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
 
@@ -154,6 +150,8 @@ module.exports = grammar({
         /[gismu]*/
       ),
 
+    string_interpolation: $ => seq("#{", $._expr, "}"),
+
     string: $ => choice($._double_quote_string, $._single_quote_string),
 
     _double_quote_string: $ =>
@@ -161,7 +159,9 @@ module.exports = grammar({
         '"',
         repeat(
           choice(
-            token.immediate(/[^\\"]+/),
+            token.immediate(/[^\\"#]+/),
+            token.immediate(/#[^{"]?/),
+            $.string_interpolation,
             $._escape_sequence,
             token.immediate("\\\n"),
             $._no_external
