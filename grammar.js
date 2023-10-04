@@ -205,7 +205,8 @@ module.exports = grammar({
         seq($._explicit_binding, optional($._expr_sep), $._exprs)
       ),
 
-    arglist: $ => seq(repeat(seq($._arg, ",")), $._arg),
+    arglist: $ =>
+      seq("(", optional(seq(repeat(seq($._arg, ",")), $._arg)), ")"),
 
     _opt: $ => seq("=", $._expr),
 
@@ -302,9 +303,7 @@ module.exports = grammar({
           $._def,
           seq(
             field("defined", choice($.subfield_lpar, $.varlpar)),
-            "(",
-            field("arguments", optional($.arglist)),
-            ")"
+            field("arguments", $.arglist)
           ),
           optional("="),
           alias($._exprs, $.definition),
@@ -577,7 +576,7 @@ module.exports = grammar({
     tuple: $ => seq("(", optional($._inner_tuple), ")"),
 
     anonymous_function: $ =>
-      prec("yields", seq("fun", "(", optional($.arglist), ")", "->", $._expr)),
+      prec("yields", seq("fun", $.arglist, "->", $._expr)),
 
     if: $ =>
       seq(
@@ -660,27 +659,33 @@ module.exports = grammar({
     block: $ => seq("begin", $._exprs, alias("end", "block_end")),
     simple_fun: $ => seq("{", $._simple_fun_body, "}"),
     while: $ =>
-      seq("while", $._expr, "do", $._exprs, alias("end", "while_end")),
+      seq(
+        "while",
+        $._expr,
+        "do",
+        alias($._exprs, $.while_do),
+        alias("end", "while_end")
+      ),
     for: $ =>
       choice(
         seq(
           "for",
-          field("for", $._optvar),
+          alias($._optvar, $.for_var),
           "=",
-          field("from", $._expr),
+          alias($._expr, $.for_from),
           "to",
-          field("to", $._expr),
+          alias($._expr, $.for_to),
           "do",
-          field("do", $._exprs),
+          alias($._exprs, $.for_do),
           alias("end", "for_end")
         ),
         seq(
           "for",
-          field("for", $._optvar),
+          alias($._optvar, $.for_var),
           "=",
-          field("iterator", $._expr),
+          alias($._expr, $.for_iteration),
           "do",
-          field("do", $._exprs),
+          alias($._exprs, $.for_do),
           alias("end", "for_end")
         )
       ),

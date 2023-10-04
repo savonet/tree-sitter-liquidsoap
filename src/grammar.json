@@ -1168,24 +1168,45 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_arg"
-              },
-              {
-                "type": "STRING",
-                "value": ","
-              }
-            ]
-          }
+          "type": "STRING",
+          "value": "("
         },
         {
-          "type": "SYMBOL",
-          "name": "_arg"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_arg"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_arg"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },
@@ -1926,28 +1947,12 @@
                   }
                 },
                 {
-                  "type": "STRING",
-                  "value": "("
-                },
-                {
                   "type": "FIELD",
                   "name": "arguments",
                   "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "arglist"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "arglist"
                   }
-                },
-                {
-                  "type": "STRING",
-                  "value": ")"
                 }
               ]
             },
@@ -4236,24 +4241,8 @@
             "value": "fun"
           },
           {
-            "type": "STRING",
-            "value": "("
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "arglist"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "STRING",
-            "value": ")"
+            "type": "SYMBOL",
+            "name": "arglist"
           },
           {
             "type": "STRING",
@@ -4894,8 +4883,13 @@
           "value": "do"
         },
         {
-          "type": "SYMBOL",
-          "name": "_exprs"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_exprs"
+          },
+          "named": true,
+          "value": "while_do"
         },
         {
           "type": "ALIAS",
@@ -4919,48 +4913,52 @@
               "value": "for"
             },
             {
-              "type": "FIELD",
-              "name": "for",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_optvar"
-              }
+              },
+              "named": true,
+              "value": "for_var"
             },
             {
               "type": "STRING",
               "value": "="
             },
             {
-              "type": "FIELD",
-              "name": "from",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_expr"
-              }
+              },
+              "named": true,
+              "value": "for_from"
             },
             {
               "type": "STRING",
               "value": "to"
             },
             {
-              "type": "FIELD",
-              "name": "to",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_expr"
-              }
+              },
+              "named": true,
+              "value": "for_to"
             },
             {
               "type": "STRING",
               "value": "do"
             },
             {
-              "type": "FIELD",
-              "name": "do",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_exprs"
-              }
+              },
+              "named": true,
+              "value": "for_do"
             },
             {
               "type": "ALIAS",
@@ -4981,36 +4979,39 @@
               "value": "for"
             },
             {
-              "type": "FIELD",
-              "name": "for",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_optvar"
-              }
+              },
+              "named": true,
+              "value": "for_var"
             },
             {
               "type": "STRING",
               "value": "="
             },
             {
-              "type": "FIELD",
-              "name": "iterator",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_expr"
-              }
+              },
+              "named": true,
+              "value": "for_iteration"
             },
             {
               "type": "STRING",
               "value": "do"
             },
             {
-              "type": "FIELD",
-              "name": "do",
+              "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
                 "name": "_exprs"
-              }
+              },
+              "named": true,
+              "value": "for_do"
             },
             {
               "type": "ALIAS",
