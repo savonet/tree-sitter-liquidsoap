@@ -26,20 +26,17 @@
       }
     },
     "var": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_var_lit"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_var"
-          }
-        ]
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_var_lit"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_var"
+        }
+      ]
     },
     "_varlpar": {
       "type": "SEQ",
@@ -189,18 +186,6 @@
           "name": "var"
         }
       ]
-    },
-    "decimal_integer": {
-      "type": "PATTERN",
-      "value": "[\\d][\\d_]*"
-    },
-    "hex_integer": {
-      "type": "PATTERN",
-      "value": "0[xX][\\da-fA-F_]+"
-    },
-    "oct_integer": {
-      "type": "PATTERN",
-      "value": "0[oO][0-7_]+"
     },
     "integer": {
       "type": "TOKEN",
@@ -4319,7 +4304,7 @@
                   "name": "_exprs"
                 },
                 "named": true,
-                "value": "elseif_then"
+                "value": "elsif_then"
               }
             ]
           }

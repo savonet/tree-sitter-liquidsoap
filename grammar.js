@@ -584,7 +584,7 @@ module.exports = grammar({
             "elsif",
             alias($._exprs, $.elsif_condition),
             "then",
-            alias($._exprs, $.elseif_then)
+            alias($._exprs, $.elsif_then)
           )
         ),
         optional(seq("else", alias($._exprs, $.if_else))),

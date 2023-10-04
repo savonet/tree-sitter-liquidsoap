@@ -1918,7 +1918,7 @@
     }
   },
   {
-    "type": "elseif_then",
+    "type": "elsif_condition",
     "named": true,
     "fields": {},
     "children": {
@@ -2089,7 +2089,7 @@
     }
   },
   {
-    "type": "elsif_condition",
+    "type": "elsif_then",
     "named": true,
     "fields": {},
     "children": {
@@ -3319,11 +3319,11 @@
       "required": true,
       "types": [
         {
-          "type": "elseif_then",
+          "type": "elsif_condition",
           "named": true
         },
         {
-          "type": "elsif_condition",
+          "type": "elsif_then",
           "named": true
         },
         {
