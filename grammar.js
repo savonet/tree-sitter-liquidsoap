@@ -562,11 +562,10 @@ module.exports = grammar({
     _app_list: $ =>
       choice($._app_list_elem, seq($._app_list_elem, ",", $._app_list)),
 
-    _invoked: $ =>
-      choice(
-        alias($.var, $.method),
-        seq(alias($.varlpar, $.method_app), "(", optional($._app_list), ")")
-      ),
+    method_app: $ =>
+      seq(field("name", $.varlpar), "(", optional($._app_list), ")"),
+
+    _invoked: $ => choice(alias($.var, $.method), $.method_app),
 
     tuple: $ => seq("(", optional($._inner_tuple), ")"),
 

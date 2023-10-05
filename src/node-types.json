@@ -5024,10 +5024,6 @@
           "named": true
         },
         {
-          "type": "anonymous_arg",
-          "named": true
-        },
-        {
           "type": "anonymous_function",
           "named": true
         },
@@ -5061,10 +5057,6 @@
         },
         {
           "type": "encoder",
-          "named": true
-        },
-        {
-          "type": "exclude_arg",
           "named": true
         },
         {
@@ -5116,10 +5108,6 @@
           "named": true
         },
         {
-          "type": "keep_arg",
-          "named": true
-        },
-        {
           "type": "list",
           "named": true
         },
@@ -5133,10 +5121,6 @@
         },
         {
           "type": "minus",
-          "named": true
-        },
-        {
-          "type": "named_arg",
           "named": true
         },
         {
@@ -5169,10 +5153,6 @@
         },
         {
           "type": "string",
-          "named": true
-        },
-        {
-          "type": "subfield",
           "named": true
         },
         {
@@ -5868,6 +5848,52 @@
     "type": "method",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "method_app",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "var",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_arg",
+          "named": true
+        },
+        {
+          "type": "exclude_arg",
+          "named": true
+        },
+        {
+          "type": "keep_arg",
+          "named": true
+        },
+        {
+          "type": "named_arg",
+          "named": true
+        },
+        {
+          "type": "subfield",
+          "named": true
+        },
+        {
+          "type": "var",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "minus",
