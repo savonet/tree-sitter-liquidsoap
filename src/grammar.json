@@ -3186,6 +3186,14 @@
           "name": "string"
         },
         {
+          "type": "SYMBOL",
+          "name": "integer"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "float"
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -3233,6 +3241,23 @@
             {
               "type": "SYMBOL",
               "name": "integer"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "var"
+            },
+            {
+              "type": "STRING",
+              "value": "="
+            },
+            {
+              "type": "SYMBOL",
+              "name": "float"
             }
           ]
         }

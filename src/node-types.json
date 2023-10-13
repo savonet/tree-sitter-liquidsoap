@@ -1640,6 +1640,10 @@
       "required": true,
       "types": [
         {
+          "type": "float",
+          "named": true
+        },
+        {
           "type": "integer",
           "named": true
         },

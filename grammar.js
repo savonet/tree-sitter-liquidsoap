@@ -458,9 +458,12 @@ module.exports = grammar({
       choice(
         $.var,
         $.string,
+				$.integer,
+				$.float,
         seq($.var, "=", $.var),
         seq($.var, "=", $.string),
-        seq($.var, "=", $.integer)
+        seq($.var, "=", $.integer),
+				seq($.var, "=", $.float)
       ),
 
     tuple_type: $ =>
