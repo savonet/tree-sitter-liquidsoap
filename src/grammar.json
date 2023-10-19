@@ -2334,6 +2334,19 @@
             },
             {
               "type": "STRING",
+              "value": "?"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "var"
+            },
+            {
+              "type": "STRING",
               "value": "="
             },
             {

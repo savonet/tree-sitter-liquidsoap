@@ -361,7 +361,8 @@ module.exports = grammar({
 
     list_pattern: $ => seq("[", $._pattern_list_with_spread, "]"),
 
-    _meth_pattern_el: $ => choice($.var, seq($.var, "=", $._pattern)),
+    _meth_pattern_el: $ =>
+      choice($.var, seq($.var, "?"), seq($.var, "=", $._pattern)),
 
     _meth_pattern_list: $ =>
       choice(
