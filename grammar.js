@@ -45,8 +45,8 @@ module.exports = grammar({
         choice(
           /__+/,
           /_*\p{Alphabetic}[\p{Alphabetic}0-9_']*/u,
-          /[\p{Emoji_Presentation}\p{So}]/u
-        )
+          /[\p{Emoji_Presentation}\p{So}]/u,
+        ),
       ),
 
     var: $ => seq($._var_lit, $._var),
@@ -82,7 +82,7 @@ module.exports = grammar({
         seq($.string, "=", $._expr),
         $.var,
         $.string,
-        $.encoder
+        $.encoder,
       ),
 
     _encoder_params: $ =>
@@ -94,9 +94,9 @@ module.exports = grammar({
         seq(
           $.encoder_name,
           optional(
-            seq("(", optional(alias($._encoder_params, $.encoder_params)), ")")
-          )
-        )
+            seq("(", optional(alias($._encoder_params, $.encoder_params)), ")"),
+          ),
+        ),
       ),
 
     time_predicate: $ =>
@@ -109,40 +109,44 @@ module.exports = grammar({
             "w",
             optional(seq(/[\d]+/, "h")),
             optional(seq(/[\d]+/, "m")),
-            optional(seq(/[\d]+/, "s"))
+            optional(seq(/[\d]+/, "s")),
           ),
           seq(
             optional(seq(/[\d]+/, "w")),
             /[\d]+/,
             "h",
             optional(seq(/[\d]+/, "m")),
-            optional(seq(/[\d]+/, "s"))
+            optional(seq(/[\d]+/, "s")),
           ),
           seq(
             optional(seq(/[\d]+/, "w")),
             optional(seq(/[\d]+/, "h")),
             /[\d]+/,
             "m",
-            optional(seq(/[\d]+/, "s"))
+            optional(seq(/[\d]+/, "s")),
           ),
           seq(
             optional(seq(/[\d]+/, "w")),
             optional(seq(/[\d]+/, "h")),
             optional(seq(/[\d]+/, "m")),
             /[\d]+/,
-            "s"
-          )
-        )
+            "s",
+          ),
+        ),
       ),
 
     regexp: $ =>
       seq(
         "r/",
         repeat(
-          choice(token.immediate(/[^\\/]+/), $._escape_sequence, $._no_external)
+          choice(
+            token.immediate(/[^\\/]+/),
+            $._escape_sequence,
+            $._no_external,
+          ),
         ),
         "/",
-        /[gismu]*/
+        /[gismu]*/,
       ),
 
     string_interpolation: $ => seq("#{", $._expr, "}"),
@@ -159,10 +163,10 @@ module.exports = grammar({
             $.string_interpolation,
             $._escape_sequence,
             token.immediate("\\\n"),
-            $._no_external
-          )
+            $._no_external,
+          ),
         ),
-        '"'
+        '"',
       ),
 
     _single_quote_string: $ =>
@@ -173,10 +177,10 @@ module.exports = grammar({
             token.immediate(/[^\\']+/),
             $._escape_sequence,
             token.immediate("\\\n"),
-            $._no_external
-          )
+            $._no_external,
+          ),
         ),
-        "'"
+        "'",
       ),
 
     _escape_sequence: $ => token.immediate(/\\./),
@@ -188,7 +192,7 @@ module.exports = grammar({
         seq($._expr, optional($._expr_sep)),
         seq($._expr, optional($._expr_sep), $._exprs),
         seq($._binding, optional($._expr_sep)),
-        seq($._binding, optional($._expr_sep), $._exprs)
+        seq($._binding, optional($._expr_sep), $._exprs),
       ),
 
     _simple_fun_body: $ =>
@@ -197,7 +201,7 @@ module.exports = grammar({
         seq($._expr, optional($._expr_sep)),
         seq($._expr, optional($._expr_sep), $._exprs),
         seq($._explicit_binding, optional($._expr_sep)),
-        seq($._explicit_binding, optional($._expr_sep), $._exprs)
+        seq($._explicit_binding, optional($._expr_sep), $._exprs),
       ),
 
     arglist: $ =>
@@ -208,7 +212,7 @@ module.exports = grammar({
     anonymous_argument: $ =>
       choice(
         seq($._optvar, optional($._opt)),
-        seq("(", $._optvar, ":", $.type, ")", optional($._opt))
+        seq("(", $._optvar, ":", $.type, ")", optional($._opt)),
       ),
 
     labeled_argument: $ =>
@@ -221,9 +225,9 @@ module.exports = grammar({
           ":",
           $.type,
           ")",
-          optional($._opt)
+          optional($._opt),
         ),
-        seq("~", field("ignored_label", $.var), "=", "_")
+        seq("~", field("ignored_label", $.var), "=", "_"),
       ),
 
     argsof: $ =>
@@ -231,7 +235,7 @@ module.exports = grammar({
         seq("%argsof", "(", $.var, ")"),
         seq("%argsof", "(", $.subfield, ")"),
         seq("%argsof", "(", $.varlbra, "[", $._args_of_params, "]", ")"),
-        seq("%argsof", "(", $.subfield_lbra, "[", $._args_of_params, "]", ")")
+        seq("%argsof", "(", $.subfield_lbra, "[", $._args_of_params, "]", ")"),
       ),
 
     _arg: $ => choice($.labeled_argument, $.anonymous_argument, $.argsof),
@@ -244,7 +248,7 @@ module.exports = grammar({
         $.keep_arg,
         $.exclude_arg,
         seq($.keep_arg, ",", $._args_of_params),
-        seq($.exclude_arg, ",", $._args_of_params)
+        seq($.exclude_arg, ",", $._args_of_params),
       ),
 
     _parse_decoration_el: $ => choice($.var, seq($.var, "=", $._expr)),
@@ -257,8 +261,8 @@ module.exports = grammar({
         1,
         seq(
           choice("json.parse", "yaml.parse"),
-          optional(seq("[", optional($._parse_decoration_args), "]"))
-        )
+          optional(seq("[", optional($._parse_decoration_args), "]")),
+        ),
       ),
 
     let_decoration: $ => choice("rec", "eval", "replaces", $._parse_decoration),
@@ -278,32 +282,32 @@ module.exports = grammar({
           ")",
           optional("="),
           alias($._exprs, $.definition),
-          alias("end", "def_end")
+          alias("end", "def_end"),
         ),
         seq(
           $._def,
           field("defined", $._optvar),
           optional("="),
           alias($._exprs, $.definition),
-          alias("end", "def_end")
+          alias("end", "def_end"),
         ),
         seq(
           $._def,
           field("defined", $.subfield),
           optional("="),
           alias($._exprs, $.definition),
-          alias("end", "def_end")
+          alias("end", "def_end"),
         ),
         seq(
           $._def,
           seq(
             field("defined", choice($.subfield_lpar, $.varlpar)),
-            field("arguments", $.arglist)
+            field("arguments", $.arglist),
           ),
           optional("="),
           alias($._exprs, $.definition),
-          alias("end", "def_end")
-        )
+          alias("end", "def_end"),
+        ),
       ),
 
     let: $ =>
@@ -312,13 +316,13 @@ module.exports = grammar({
           $._let,
           field("defined", $.subfield),
           "=",
-          alias($._expr, $.definition)
+          alias($._expr, $.definition),
         ),
         seq(
           $._let,
           field("defined", $._pattern),
           "=",
-          alias($._expr, $.definition)
+          alias($._expr, $.definition),
         ),
         seq(
           $._let,
@@ -328,8 +332,8 @@ module.exports = grammar({
           field("type", $.type),
           ")",
           "=",
-          alias($._expr, $.definition)
-        )
+          alias($._expr, $.definition),
+        ),
       ),
 
     _explicit_binding: $ => choice($.let, $.def),
@@ -350,7 +354,7 @@ module.exports = grammar({
         $._pattern_list,
         seq($.spread, ",", $._pattern_list),
         seq($._pattern_list, ",", $.spread),
-        seq($._pattern_list, ",", $.spread, ",", $._pattern_list)
+        seq($._pattern_list, ",", $.spread, ",", $._pattern_list),
       ),
 
     tuple_pattern: $ => seq("(", optional($._pattern_list), ")"),
@@ -362,7 +366,7 @@ module.exports = grammar({
     _meth_pattern_list: $ =>
       choice(
         $._meth_pattern_el,
-        seq($._meth_pattern_el, ",", $._meth_pattern_list)
+        seq($._meth_pattern_el, ",", $._meth_pattern_list),
       ),
 
     _record_pattern: $ => seq("{", optional($._meth_pattern_list), "}"),
@@ -374,8 +378,8 @@ module.exports = grammar({
         1,
         choice(
           seq(alias("...", $.op), optional($._optvar)),
-          seq($._meth_pattern_el, ",", $._meth_spread_list)
-        )
+          seq($._meth_pattern_el, ",", $._meth_spread_list),
+        ),
       ),
 
     meth_pattern: $ =>
@@ -385,7 +389,7 @@ module.exports = grammar({
         seq($.var, ".", $._record_pattern),
         seq("_", ".", $._record_pattern),
         seq($.tuple_pattern, ".", $._record_pattern),
-        seq($.list_pattern, ".", $._record_pattern)
+        seq($.list_pattern, ".", $._record_pattern),
       ),
 
     _pattern: $ =>
@@ -401,12 +405,12 @@ module.exports = grammar({
         prec("lpar", seq("(", $.tuple_type, ")")),
         prec.right(
           "yields",
-          seq("(", optional($.args_type), ")", "->", $.type)
+          seq("(", optional($.args_type), ")", "->", $.type),
         ),
         seq("{", optional($.record_type), "}"),
         seq($.type, ".", $.var),
         seq($.type, ".", "{", optional($.record_type), "}"),
-        $.source_type
+        $.source_type,
       ),
 
     record_type: $ => seq(repeat(seq($.meth_type, ",")), $.meth_type),
@@ -416,20 +420,20 @@ module.exports = grammar({
         seq($.var, ":", $.type),
         seq($.var, "?", ":", $.type),
         seq($.string, "as", $.var, ":", $.type),
-        seq($.string, "as", $.var, "?", ":", $.type)
+        seq($.string, "as", $.var, "?", ":", $.type),
       ),
 
     source_type: $ =>
       choice(
         seq($.varlpar, "(", ")"),
-        seq($.varlpar, "(", $.source_tracks_type, ")")
+        seq($.varlpar, "(", $.source_tracks_type, ")"),
       ),
 
     source_tracks_type: $ =>
       choice(
         seq($.var, "=", $.content_type),
         "...",
-        seq($.var, "=", $.content_type, ",", $.source_tracks_type)
+        seq($.var, "=", $.content_type, ",", $.source_tracks_type),
       ),
 
     content_type: $ =>
@@ -447,8 +451,8 @@ module.exports = grammar({
           $.varlpar,
           "(",
           optional($.content_args_type),
-          ")"
-        )
+          ")",
+        ),
       ),
 
     content_args_type: $ =>
@@ -458,12 +462,12 @@ module.exports = grammar({
       choice(
         $.var,
         $.string,
-				$.integer,
-				$.float,
+        $.integer,
+        $.float,
         seq($.var, "=", $.var),
         seq($.var, "=", $.string),
         seq($.var, "=", $.integer),
-				seq($.var, "=", $.float)
+        seq($.var, "=", $.float),
       ),
 
     tuple_type: $ =>
@@ -478,14 +482,14 @@ module.exports = grammar({
     _in_subfield: $ =>
       choice(
         alias($.var, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield)
+        seq(alias($.var, $.method), ".", $._in_subfield),
       ),
 
     _subfield_lbra: $ => seq($.var, ".", $._in_subfield_lbra),
     _in_subfield_lbra: $ =>
       choice(
         alias($.varlbra, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield_lbra)
+        seq(alias($.var, $.method), ".", $._in_subfield_lbra),
       ),
 
     subfield_lbra: $ => alias($._subfield_lbra, $.subfield),
@@ -494,7 +498,7 @@ module.exports = grammar({
     _in_subfield_lpar: $ =>
       choice(
         alias($.varlpar, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield_lpar)
+        seq(alias($.var, $.method), ".", $._in_subfield_lpar),
       ),
 
     subfield_lpar: $ => alias($._subfield_lpar, $.subfield),
@@ -509,7 +513,7 @@ module.exports = grammar({
         choice($.var, $.subfield),
         $._exprs,
         optional(seq("%else", $._exprs)),
-        "%endif"
+        "%endif",
       ),
 
     if_encoder: $ =>
@@ -518,7 +522,7 @@ module.exports = grammar({
         $.encoder,
         $._exprs,
         optional(seq("%else", $._exprs)),
-        "%endif"
+        "%endif",
       ),
 
     if_version: $ =>
@@ -528,7 +532,7 @@ module.exports = grammar({
         choice($.integer, $.float, $.version),
         $._exprs,
         optional(seq("%else", $._exprs)),
-        "%endif"
+        "%endif",
       ),
 
     _inner_list_spread: $ => seq(alias("...", $.op), optional($._expr)),
@@ -559,7 +563,7 @@ module.exports = grammar({
         seq("%argsof", "(", $.var, ")"),
         seq("%argsof", "(", $.subfield, ")"),
         seq("%argsof", "(", $.varlbra, "[", $._args_of_params, "]", ")"),
-        seq("%argsof", "(", $.subfield_lbra, "[", $._args_of_params, "]", ")")
+        seq("%argsof", "(", $.subfield_lbra, "[", $._args_of_params, "]", ")"),
       ),
 
     _app_list: $ =>
@@ -586,11 +590,11 @@ module.exports = grammar({
             "elsif",
             alias($._exprs, $.elsif_condition),
             "then",
-            alias($._exprs, $.elsif_then)
-          )
+            alias($._exprs, $.elsif_then),
+          ),
         ),
         optional(seq("else", alias($._exprs, $.if_else))),
-        alias("end", "if_end")
+        alias("end", "if_end"),
       ),
     inline_if: $ =>
       prec.right(
@@ -600,8 +604,8 @@ module.exports = grammar({
           "?",
           field("if_true", $._expr),
           ":",
-          field("if_false", $._expr)
-        )
+          field("if_false", $._expr),
+        ),
       ),
 
     get: $ => prec("get", seq("!", $._expr)),
@@ -611,8 +615,8 @@ module.exports = grammar({
         seq(
           field("reference", $._expr),
           alias(":=", $.op),
-          field("value", $._expr)
-        )
+          field("value", $._expr),
+        ),
       ),
 
     record: $ =>
@@ -625,13 +629,13 @@ module.exports = grammar({
             "{",
             optional($._record),
             optional(","),
-            "}"
-          )
+            "}",
+          ),
         ),
         seq("{", alias("...", $.op), $._expr, "}"),
         seq("{", $._record, ",", alias("...", $.op), $._expr, "}"),
         seq("{", $._record, optional(","), "}"),
-        seq("{", "}")
+        seq("{", "}"),
       ),
 
     coerce: $ => seq("(", $._expr, alias(":", $.op), $.type, ")"),
@@ -640,7 +644,7 @@ module.exports = grammar({
     invoke: $ =>
       choice(
         seq($._expr, ".", $._invoked),
-        prec("question", seq($._expr, "?.", $._invoked))
+        prec("question", seq($._expr, "?.", $._invoked)),
       ),
 
     app: $ => seq(field("name", $.varlpar), "(", optional($._app_list), ")"),
@@ -651,7 +655,7 @@ module.exports = grammar({
     assoc: $ =>
       choice(
         seq($.varlbra, "[", $._expr, "]"),
-        seq($._expr, ".", $.varlbra, "[", $._expr, "]")
+        seq($._expr, ".", $.varlbra, "[", $._expr, "]"),
       ),
     block: $ => seq("begin", $._exprs, alias("end", "block_end")),
     simple_fun: $ => seq("{", $._simple_fun_body, "}"),
@@ -661,7 +665,7 @@ module.exports = grammar({
         $._expr,
         "do",
         alias($._exprs, $.while_do),
-        alias("end", "while_end")
+        alias("end", "while_end"),
       ),
     for: $ =>
       choice(
@@ -674,7 +678,7 @@ module.exports = grammar({
           alias($._expr, $.for_to),
           "do",
           alias($._exprs, $.for_do),
-          alias("end", "for_end")
+          alias("end", "for_end"),
         ),
         seq(
           "for",
@@ -683,8 +687,8 @@ module.exports = grammar({
           alias($._expr, $.for_iteration),
           "do",
           alias($._exprs, $.for_do),
-          alias("end", "for_end")
-        )
+          alias("end", "for_end"),
+        ),
       ),
     coalesce: $ =>
       prec.left("coalesce", seq($._expr, alias("??", $.op), $._expr)),
@@ -699,7 +703,7 @@ module.exports = grammar({
           field("in", $.list),
           "do",
           alias($._exprs, $.try_do),
-          alias("end", "try_end")
+          alias("end", "try_end"),
         ),
         seq(
           "try",
@@ -708,8 +712,8 @@ module.exports = grammar({
           field("catch", $._optvar),
           "do",
           alias($._exprs, $.try_do),
-          alias("end", "for_end")
-        )
+          alias("end", "for_end"),
+        ),
       ),
 
     and: $ => prec.left("and", seq($._expr, "and", $._expr)),
@@ -719,14 +723,14 @@ module.exports = grammar({
       choice(
         prec.left("bin1", seq($._expr, alias($._bin1, $.op), $._expr)),
         prec.left("bin2", seq($._expr, alias($._bin2, $.op), $._expr)),
-        prec.left("bin3", seq($._expr, alias($._bin3, $.op), $._expr))
+        prec.left("bin3", seq($._expr, alias($._bin3, $.op), $._expr)),
       ),
 
     minus: $ =>
       choice(
         seq($.uminus, $.float),
         seq($.uminus, $.integer),
-        seq($.uminus, "(", $._expr, ")")
+        seq($.uminus, "(", $._expr, ")"),
       ),
 
     _expr: $ =>
@@ -768,7 +772,7 @@ module.exports = grammar({
         $.and,
         $.or,
         $.infix,
-        $.time_predicate
+        $.time_predicate,
       ),
   },
 });
