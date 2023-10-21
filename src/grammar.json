@@ -865,8 +865,19 @@
                 "type": "IMMEDIATE_TOKEN",
                 "content": {
                   "type": "PATTERN",
-                  "value": "[^\\\\']+"
+                  "value": "[^\\\\'#]+"
                 }
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "#[^{']?"
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "string_interpolation"
               },
               {
                 "type": "SYMBOL",

@@ -174,7 +174,9 @@ module.exports = grammar({
         "'",
         repeat(
           choice(
-            token.immediate(/[^\\']+/),
+            token.immediate(/[^\\'#]+/),
+            token.immediate(/#[^{']?/),
+            $.string_interpolation,
             $._escape_sequence,
             token.immediate("\\\n"),
             $._no_external,
