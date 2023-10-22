@@ -74,7 +74,7 @@ module.exports = grammar({
 
     bool: $ => choice("true", "false"),
 
-    encoder_name: $ => /%[\p{Alphabetic}0-9_\.]+/u,
+    encoder_name: $ => /%[\p{Alphabetic}]+[\p{Alphabetic}0-9_\.]+/u,
 
     _encoder_param: $ =>
       choice(

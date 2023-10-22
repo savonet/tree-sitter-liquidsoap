@@ -239,7 +239,7 @@
     },
     "encoder_name": {
       "type": "PATTERN",
-      "value": "%[\\p{Alphabetic}0-9_\\.]+"
+      "value": "%[\\p{Alphabetic}]+[\\p{Alphabetic}0-9_\\.]+"
     },
     "_encoder_param": {
       "type": "CHOICE",
