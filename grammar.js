@@ -34,7 +34,7 @@ module.exports = grammar({
     $._float_no_lbra,
     $._no_external,
     $.comment,
-    $.uminus,
+    $._uminus,
   ],
 
   rules: {
@@ -66,9 +66,16 @@ module.exports = grammar({
     _optvar: $ => choice("_", $.var),
 
     integer: $ =>
-      token(choice(/[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
+      seq(
+        optional($._uminus),
+        token(choice(/[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
+      ),
 
-    float: $ => choice($._float_no_lbra, /([\d][\d_]*)?\.[\d][\d_]*/),
+    float: $ =>
+      seq(
+        optional($._uminus),
+        choice($._float_no_lbra, /([\d][\d_]*)?\.[\d][\d_]*/),
+      ),
 
     version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
 
@@ -722,18 +729,13 @@ module.exports = grammar({
     and: $ => prec.left("and", seq($._expr, "and", $._expr)),
     or: $ => prec.left("or", seq($._expr, "or", $._expr)),
 
+    _minus: $ => seq($._uminus, "(", $._expr, ")"),
+
     infix: $ =>
       choice(
         prec.left("bin1", seq($._expr, alias($._bin1, $.op), $._expr)),
         prec.left("bin2", seq($._expr, alias($._bin2, $.op), $._expr)),
         prec.left("bin3", seq($._expr, alias($._bin3, $.op), $._expr)),
-      ),
-
-    minus: $ =>
-      choice(
-        seq($.uminus, $.float),
-        seq($.uminus, $.integer),
-        seq($.uminus, "(", $._expr, ")"),
       ),
 
     _expr: $ =>
@@ -748,7 +750,7 @@ module.exports = grammar({
         $.not,
         $.bool,
         $.float,
-        $.minus,
+        $._minus,
         $.string,
         // $.string_interpolation,
         $.var,
