@@ -8,14 +8,17 @@ enum TokenType {
   LBRA,
   FLOAT_NO_LBRA,
   NO_EXTERNAL,
+  PARSE_DECORATOR,
   COMMENT,
-  UMINUS,
-  NO_GETS,
+  UMINUS
 };
 
 enum State {
   START,
   POST_VAR,
+  PRE_PARSE_DECORATOR,
+  IN_PARSE_DECORATOR,
+  POST_PARSE_DECORATOR,
   IN_FLOAT,
   IN_FLOAT_NO_LBRA,
   IN_COMMENT_START,
@@ -41,6 +44,7 @@ public:
 #define NUMBER_REX L"[\\d]"
 #define SKIP_REX L"[[:space:]]"
 #define SPACE_REX L"[ ]"
+#define PARSE_DECORATOR_REX L"[a-z.]"
 
 extern "C" {
 void *tree_sitter_liquidsoap_external_scanner_create() {
@@ -70,13 +74,16 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
   std::wregex const is_number(NUMBER_REX);
   std::wregex const skip_rex(SKIP_REX);
   std::wregex const space(SPACE_REX);
+  std::wregex const parse_decorator(PARSE_DECORATOR_REX);
   State state = START;
   Config *config = (Config *)payload;
   std::wstring lookahead_string;
+  std::wstring parser_decorator = L"";
 
   if (!valid_symbols[VAR] && !valid_symbols[LBRA] && !valid_symbols[LPAR] &&
       !valid_symbols[NO_EXTERNAL] && !valid_symbols[FLOAT_NO_LBRA] &&
-      !valid_symbols[COMMENT] && !valid_symbols[UMINUS]) {
+      !valid_symbols[PARSE_DECORATOR] && !valid_symbols[COMMENT] &&
+      !valid_symbols[UMINUS]) {
     config->reset();
     return false;
   }
@@ -86,6 +93,9 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (valid_symbols[VAR] || valid_symbols[LBRA] || valid_symbols[LPAR])
     state = POST_VAR;
+
+  if (valid_symbols[PARSE_DECORATOR])
+    state = PRE_PARSE_DECORATOR;
 
   START_LEXER();
   eof = lexer->eof(lexer);
@@ -207,6 +217,39 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     }
 
     ADVANCE(IN_MULTILINE_COMMENT);
+
+  case PRE_PARSE_DECORATOR:
+    if (std::regex_match(lookahead_string, space))
+      SKIP(PRE_PARSE_DECORATOR);
+
+    if (!std::regex_match(lookahead_string, parse_decorator))
+      END_STATE();
+
+    parser_decorator += lookahead;
+    ADVANCE(IN_PARSE_DECORATOR);
+
+  case IN_PARSE_DECORATOR:
+    if (std::regex_match(lookahead_string, parse_decorator)) {
+      parser_decorator += lookahead;
+      ADVANCE(IN_PARSE_DECORATOR);
+    }
+
+    if (parser_decorator != L"json.parse" &&
+        parser_decorator != L"yaml.parse") {
+      END_STATE();
+    }
+
+    ACCEPT_TOKEN(PARSE_DECORATOR);
+    ADVANCE(POST_PARSE_DECORATOR);
+
+  case POST_PARSE_DECORATOR:
+    if (std::regex_match(lookahead_string, space))
+      SKIP(POST_PARSE_DECORATOR);
+
+    if (lookahead == '.' || lookahead == '=')
+      result = false;
+
+    END_STATE();
 
   case POST_VAR:
     if (std::regex_match(lookahead_string, space))

@@ -23,7 +23,15 @@ module.exports = grammar({
     ],
   ],
 
-  inline: $ => [$.varlpar, $.varlbra, $.subfield_lbra, $.subfield_lpar],
+  inline: $ => [
+    $.varlpar,
+    $.varlbra,
+    $.subfield_lbra,
+    $.subfield_lpar,
+    $._def,
+    $._let,
+    $._parse_decoration,
+  ],
 
   extras: $ => [$.comment, /[\p{White_Space}\r\t]+/u],
 
@@ -33,6 +41,7 @@ module.exports = grammar({
     $._var_lbra,
     $._float_no_lbra,
     $._no_external,
+    $._parse_decorator,
     $.comment,
     $._uminus,
   ],
@@ -260,25 +269,9 @@ module.exports = grammar({
         seq($.exclude_arg, ",", $._args_of_params),
       ),
 
-    _parse_decoration_el: $ => choice($.var, seq($.var, "=", $._expr)),
+    _def_decoration: $ => choice("rec", "replaces"),
 
-    _parse_decoration_args: $ =>
-      seq(repeat(seq($._parse_decoration_el, ",")), $._parse_decoration_el),
-
-    _parse_decoration: $ =>
-      prec.right(
-        1,
-        seq(
-          choice("json.parse", "yaml.parse"),
-          optional(seq("[", optional($._parse_decoration_args), "]")),
-        ),
-      ),
-
-    let_decoration: $ => choice("rec", "eval", "replaces", $._parse_decoration),
-
-    _let: $ => choice("let", seq("let", $.let_decoration)),
-
-    _def: $ => choice("def", seq("def", $.let_decoration)),
+    _def: $ => seq("def", optional(alias($._def_decoration, $.let_decoration))),
 
     def: $ =>
       choice(
@@ -317,6 +310,26 @@ module.exports = grammar({
           alias($._exprs, $.definition),
           alias("end", "def_end"),
         ),
+      ),
+
+    _let_decoration: $ => choice("eval", "replaces"),
+
+    _parse_decoration_el: $ => prec(1, choice($.var, seq($.var, "=", $._expr))),
+
+    _parse_decoration_args: $ =>
+      seq(repeat(seq($._parse_decoration_el, ",")), $._parse_decoration_el),
+
+    _parse_decoration: $ =>
+      seq(
+        $._parse_decorator,
+        optional(seq("[", optional($._parse_decoration_args), "]")),
+      ),
+
+    _let: $ =>
+      choice(
+        "let",
+        seq("let", alias($._let_decoration, $.let_decoration)),
+        seq("let", alias($._parse_decoration, $.let_decoration)),
       ),
 
     let: $ =>
