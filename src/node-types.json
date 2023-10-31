@@ -4452,17 +4452,9 @@
     "named": true,
     "fields": {
       "cond": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -4610,17 +4602,9 @@
         ]
       },
       "if_false": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -4768,17 +4752,9 @@
         ]
       },
       "if_true": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -4926,11 +4902,6 @@
         ]
       }
     }
-  },
-  {
-    "type": "integer",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "invoke",
@@ -5665,17 +5636,9 @@
         ]
       },
       "value": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -6294,17 +6257,9 @@
     "named": true,
     "fields": {
       "base": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -6626,17 +6581,9 @@
         ]
       },
       "value": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -6810,17 +6757,9 @@
     "named": true,
     "fields": {
       "reference": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -6968,17 +6907,9 @@
         ]
       },
       "value": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "and",
             "named": true
@@ -9030,6 +8961,10 @@
   {
     "type": "if_end",
     "named": false
+  },
+  {
+    "type": "integer",
+    "named": true
   },
   {
     "type": "json.object",

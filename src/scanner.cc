@@ -124,11 +124,20 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       END_STATE();
     }
 
+    if (lookahead == '}') {
+      config->no_uminus = true;
+      END_STATE();
+    }
+
     if (lookahead == '#')
       ADVANCE(IN_COMMENT_START);
 
-    if (lookahead == '-' && !config->no_uminus)
-      ADVANCE(IS_UMINUS);
+    if (lookahead == '-')
+      if (config->no_uminus) {
+        ADVANCE(IN_FLOAT);
+      } else {
+        ADVANCE(IS_UMINUS);
+      }
 
     config->reset();
     END_STATE();

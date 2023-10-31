@@ -3,6 +3,7 @@ module.exports = grammar({
 
   precedences: $ => [
     [
+      "uminus",
       "lpar",
       "colon",
       "dot",
@@ -75,16 +76,8 @@ module.exports = grammar({
     _optvar: $ => choice("_", $.var),
 
     integer: $ =>
-      seq(
-        optional($._uminus),
-        token(choice(/[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
-      ),
-
-    float: $ =>
-      seq(
-        optional($._uminus),
-        choice($._float_no_lbra, /([\d][\d_]*)?\.[\d][\d_]*/),
-      ),
+      token(choice(/-?[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
+    float: $ => choice($._float_no_lbra, /-?([\d][\d_]*)?\.[\d][\d_]*/),
 
     version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
 
@@ -742,7 +735,7 @@ module.exports = grammar({
     and: $ => prec.left("and", seq($._expr, "and", $._expr)),
     or: $ => prec.left("or", seq($._expr, "or", $._expr)),
 
-    _minus: $ => seq($._uminus, "(", $._expr, ")"),
+    _minus: $ => prec("uminus", seq($._uminus, $._expr)),
 
     infix: $ =>
       choice(
@@ -765,7 +758,6 @@ module.exports = grammar({
         $.float,
         $._minus,
         $.string,
-        // $.string_interpolation,
         $.var,
         $.list,
         $.get,
