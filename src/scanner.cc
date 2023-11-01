@@ -23,6 +23,7 @@ enum State {
   IN_FLOAT_NO_LBRA,
   IN_COMMENT_START,
   IN_INLINE_COMMENT,
+  IN_INLINE_COMMENT_CONTINUE,
   IN_INLINE_COMMENT_END,
   IN_MULTILINE_COMMENT,
   IN_MULTILINE_COMMENT_END,
@@ -201,6 +202,20 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       ADVANCE(IN_INLINE_COMMENT_END);
 
     if (lookahead == '#')
+      ADVANCE(IN_INLINE_COMMENT_CONTINUE);
+
+    result = true;
+    lexer->result_symbol = COMMENT;
+    config->reset();
+    END_STATE();
+
+  case IN_INLINE_COMMENT_CONTINUE:
+    if (lookahead == '\n') {
+      lexer->mark_end(lexer);
+      ADVANCE(IN_INLINE_COMMENT_END);
+    }
+
+    if (lookahead != '<')
       ADVANCE(IN_INLINE_COMMENT);
 
     result = true;
