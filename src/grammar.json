@@ -3916,6 +3916,18 @@
         {
           "type": "SYMBOL",
           "name": "_inner_list_item"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },

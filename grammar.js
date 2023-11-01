@@ -557,7 +557,11 @@ module.exports = grammar({
       choice(alias($._inner_list_spread, $.spread), $._expr),
 
     _inner_list: $ =>
-      seq(repeat(seq($._inner_list_item, ",")), $._inner_list_item),
+      seq(
+        repeat(seq($._inner_list_item, ",")),
+        $._inner_list_item,
+        optional(","),
+      ),
 
     list: $ => seq("[", optional($._inner_list), "]"),
 
