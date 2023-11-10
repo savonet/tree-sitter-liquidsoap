@@ -569,7 +569,14 @@ module.exports = grammar({
       choice(seq($._expr, ",", $._expr), seq($._expr, ",", $._inner_tuple)),
 
     record_entry: $ =>
-      seq(field("name", alias($.var, $.method)), "=", field("value", $._expr)),
+      choice(
+        seq("...", $._expr),
+        seq(
+          field("name", alias($.var, $.method)),
+          "=",
+          field("value", $._expr),
+        ),
+      ),
 
     _record: $ =>
       prec.left(1, choice($.record_entry, seq($._record, ",", $.record_entry))),
@@ -652,8 +659,6 @@ module.exports = grammar({
             "}",
           ),
         ),
-        seq("{", alias("...", $.op), $._expr, "}"),
-        seq("{", $._record, ",", alias("...", $.op), $._expr, "}"),
         seq("{", $._record, optional(","), "}"),
         seq("{", "}"),
       ),
