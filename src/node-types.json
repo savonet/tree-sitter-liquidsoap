@@ -132,6 +132,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -287,6 +291,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -439,6 +447,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -602,6 +614,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -807,6 +823,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -1049,6 +1069,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -1246,6 +1270,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -1410,6 +1438,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -1566,6 +1598,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -1859,6 +1895,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -2026,6 +2066,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -2190,6 +2234,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -2364,6 +2412,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -2585,6 +2637,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -2737,6 +2793,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -2895,6 +2955,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -3047,6 +3111,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -3217,6 +3285,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -3418,6 +3490,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -3589,6 +3665,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -3753,6 +3833,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -3923,6 +4007,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -4090,6 +4178,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -4254,6 +4346,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -4425,6 +4521,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -4580,6 +4680,10 @@
             "named": true
           },
           {
+            "type": "time_interval",
+            "named": true
+          },
+          {
             "type": "time_predicate",
             "named": true
           },
@@ -4730,6 +4834,10 @@
             "named": true
           },
           {
+            "type": "time_interval",
+            "named": true
+          },
+          {
             "type": "time_predicate",
             "named": true
           },
@@ -4877,6 +4985,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "time_interval",
             "named": true
           },
           {
@@ -5041,6 +5153,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -5232,6 +5348,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -5460,6 +5580,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -5764,6 +5888,10 @@
             "named": true
           },
           {
+            "type": "time_interval",
+            "named": true
+          },
+          {
             "type": "time_predicate",
             "named": true
           },
@@ -5917,6 +6045,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -6075,6 +6207,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -6230,6 +6366,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -6382,6 +6522,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "time_interval",
             "named": true
           },
           {
@@ -6561,6 +6705,10 @@
             "named": true
           },
           {
+            "type": "time_interval",
+            "named": true
+          },
+          {
             "type": "time_predicate",
             "named": true
           },
@@ -6709,6 +6857,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -6887,6 +7039,10 @@
             "named": true
           },
           {
+            "type": "time_interval",
+            "named": true
+          },
+          {
             "type": "time_predicate",
             "named": true
           },
@@ -7034,6 +7190,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "time_interval",
             "named": true
           },
           {
@@ -7215,6 +7375,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -7379,6 +7543,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -7583,6 +7751,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -7753,6 +7925,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -7793,11 +7969,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "time_predicate",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "try",
@@ -7988,6 +8159,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -8155,6 +8330,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -8307,6 +8486,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -8551,6 +8734,10 @@
           "named": true
         },
         {
+          "type": "time_interval",
+          "named": true
+        },
+        {
           "type": "time_predicate",
           "named": true
         },
@@ -8719,6 +8906,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
           "named": true
         },
         {
@@ -8953,10 +9144,6 @@
     "named": false
   },
   {
-    "type": "h",
-    "named": false
-  },
-  {
     "type": "if",
     "named": false
   },
@@ -8974,10 +9161,6 @@
   },
   {
     "type": "let",
-    "named": false
-  },
-  {
-    "type": "m",
     "named": false
   },
   {
@@ -9009,12 +9192,16 @@
     "named": false
   },
   {
-    "type": "s",
+    "type": "then",
     "named": false
   },
   {
-    "type": "then",
-    "named": false
+    "type": "time_interval",
+    "named": true
+  },
+  {
+    "type": "time_predicate",
+    "named": true
   },
   {
     "type": "to",
@@ -9035,10 +9222,6 @@
   {
     "type": "version",
     "named": true
-  },
-  {
-    "type": "w",
-    "named": false
   },
   {
     "type": "while",

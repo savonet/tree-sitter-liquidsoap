@@ -1,3 +1,46 @@
+const time_predicate = token(
+  choice(
+    token(
+      seq(
+        optional(token(seq(/[\d]+/, "w"))),
+        token(seq(/[\d]+/, "h", /[\d]+/)),
+      ),
+    ),
+    token(
+      seq(
+        token(seq(/[\d]+/, "w")),
+        optional(token(seq(/[\d]+/, "h"))),
+        optional(token(seq(/[\d]+/, "m"))),
+        optional(token(seq(/[\d]+/, "s"))),
+      ),
+    ),
+    token(
+      seq(
+        optional(token(seq(/[\d]+/, "w"))),
+        token(seq(/[\d]+/, "h")),
+        optional(token(seq(/[\d]+/, "m"))),
+        optional(token(seq(/[\d]+/, "s"))),
+      ),
+    ),
+    token(
+      seq(
+        optional(token(seq(/[\d]+/, "w"))),
+        optional(token(seq(/[\d]+/, "h"))),
+        token(seq(/[\d]+/, "m")),
+        optional(token(seq(/[\d]+/, "s"))),
+      ),
+    ),
+    token(
+      seq(
+        optional(token(seq(/[\d]+/, "w"))),
+        optional(token(seq(/[\d]+/, "h"))),
+        optional(token(seq(/[\d]+/, "m"))),
+        token(seq(/[\d]+/, "s")),
+      ),
+    ),
+  ),
+);
+
 module.exports = grammar({
   name: "liquidsoap",
 
@@ -108,41 +151,9 @@ module.exports = grammar({
         ),
       ),
 
-    time_predicate: $ =>
-      prec.left(
-        1,
-        choice(
-          seq(optional(seq(/[\d]+/, "w")), seq(/[\d]+/, "h", /[\d]+/)),
-          seq(
-            /[\d]+/,
-            "w",
-            optional(seq(/[\d]+/, "h")),
-            optional(seq(/[\d]+/, "m")),
-            optional(seq(/[\d]+/, "s")),
-          ),
-          seq(
-            optional(seq(/[\d]+/, "w")),
-            /[\d]+/,
-            "h",
-            optional(seq(/[\d]+/, "m")),
-            optional(seq(/[\d]+/, "s")),
-          ),
-          seq(
-            optional(seq(/[\d]+/, "w")),
-            optional(seq(/[\d]+/, "h")),
-            /[\d]+/,
-            "m",
-            optional(seq(/[\d]+/, "s")),
-          ),
-          seq(
-            optional(seq(/[\d]+/, "w")),
-            optional(seq(/[\d]+/, "h")),
-            optional(seq(/[\d]+/, "m")),
-            /[\d]+/,
-            "s",
-          ),
-        ),
-      ),
+    time_predicate: $ => time_predicate,
+
+    time_interval: $ => token(seq(time_predicate, "-", time_predicate)),
 
     regexp: $ =>
       seq(
@@ -792,6 +803,7 @@ module.exports = grammar({
         $.or,
         $.infix,
         $.time_predicate,
+        $.time_interval,
       ),
   },
 });
