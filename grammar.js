@@ -153,7 +153,14 @@ module.exports = grammar({
 
     time_predicate: $ => time_predicate,
 
-    time_interval: $ => token(seq(time_predicate, "-", time_predicate)),
+    time_interval: $ =>
+      token(
+        seq(
+          alias(time_predicate, $.time_predicate),
+          "-",
+          alias(time_predicate, $.time_predicate),
+        ),
+      ),
 
     regexp: $ =>
       seq(
