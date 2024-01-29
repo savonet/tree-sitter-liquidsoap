@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-liquidsoap",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Tree sitter tools for the liquidsoap language",
   "main": "bindings/node",
   "scripts": {

@@ -110,7 +110,7 @@ module.exports = grammar({
     _varlbra: $ => seq($._var_lit, $._var_lbra),
     varlbra: $ => alias($._varlbra, $.var),
 
-    _bin1: $ => token(choice("!=", "==", "<", "<=", ">", ">=")),
+    _bin1: $ => token(choice("!=", "==", "<", "<=", ">", ">=", "@")),
 
     _bin2: $ => token(choice("+", "%", "^", "+.", "-.", "-")),
 
