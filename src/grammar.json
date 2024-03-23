@@ -16,11 +16,13 @@
           },
           {
             "type": "PATTERN",
-            "value": "_*\\p{Alphabetic}[\\p{Alphabetic}0-9_']*"
+            "value": "_*\\p{Alphabetic}[\\p{Alphabetic}0-9_']*",
+            "flags": "u"
           },
           {
             "type": "PATTERN",
-            "value": "[\\p{Emoji_Presentation}\\p{So}]"
+            "value": "[\\p{Emoji_Presentation}\\p{So}]",
+            "flags": "u"
           }
         ]
       }
@@ -243,7 +245,8 @@
     },
     "encoder_name": {
       "type": "PATTERN",
-      "value": "%[\\p{Alphabetic}]+[\\p{Alphabetic}0-9_\\.]+"
+      "value": "%[\\p{Alphabetic}]+[\\p{Alphabetic}0-9_\\.]+",
+      "flags": "u"
     },
     "_encoder_param": {
       "type": "CHOICE",
@@ -6518,7 +6521,8 @@
     },
     {
       "type": "PATTERN",
-      "value": "[\\p{White_Space}\\r\\t]+"
+      "value": "[\\p{White_Space}\\r\\t]+",
+      "flags": "u"
     }
   ],
   "conflicts": [],
@@ -6643,4 +6647,3 @@
   ],
   "supertypes": []
 }
-
