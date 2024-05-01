@@ -737,6 +737,13 @@ module.exports = grammar({
       prec.left("coalesce", seq($._expr, alias("??", $.op), $._expr)),
     try: $ =>
       choice(
+          seq(
+          "try",
+          alias($._exprs, $.try_body),
+          "finally",
+          alias($._exprs, $.try_finqlly),
+          "end"
+        ),
         seq(
           "try",
           alias($._exprs, $.try_body),
@@ -746,6 +753,7 @@ module.exports = grammar({
           field("in", $.list),
           "do",
           alias($._exprs, $.try_do),
+          optional(seq("finally", alias($._exprs, $.try_finally))),
           alias("end", "try_end"),
         ),
         seq(
@@ -755,6 +763,7 @@ module.exports = grammar({
           field("catch", $._optvar),
           "do",
           alias($._exprs, $.try_do),
+          optional(seq("finally", alias($._exprs, $.try_finally))),
           alias("end", "for_end"),
         ),
       ),

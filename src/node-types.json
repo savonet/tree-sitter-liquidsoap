@@ -7976,7 +7976,7 @@
     "fields": {
       "catch": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "_",
@@ -8009,6 +8009,14 @@
         },
         {
           "type": "try_do",
+          "named": true
+        },
+        {
+          "type": "try_finally",
+          "named": true
+        },
+        {
+          "type": "try_finqlly",
           "named": true
         }
       ]
@@ -8187,6 +8195,348 @@
   },
   {
     "type": "try_do",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "and",
+          "named": true
+        },
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "app",
+          "named": true
+        },
+        {
+          "type": "append",
+          "named": true
+        },
+        {
+          "type": "assoc",
+          "named": true
+        },
+        {
+          "type": "binding",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "bool",
+          "named": true
+        },
+        {
+          "type": "coalesce",
+          "named": true
+        },
+        {
+          "type": "coerce",
+          "named": true
+        },
+        {
+          "type": "def",
+          "named": true
+        },
+        {
+          "type": "encoder",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "for",
+          "named": true
+        },
+        {
+          "type": "get",
+          "named": true
+        },
+        {
+          "type": "if",
+          "named": true
+        },
+        {
+          "type": "if_def",
+          "named": true
+        },
+        {
+          "type": "if_encoder",
+          "named": true
+        },
+        {
+          "type": "if_version",
+          "named": true
+        },
+        {
+          "type": "include",
+          "named": true
+        },
+        {
+          "type": "infix",
+          "named": true
+        },
+        {
+          "type": "inline_if",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "invoke",
+          "named": true
+        },
+        {
+          "type": "let",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "not",
+          "named": true
+        },
+        {
+          "type": "or",
+          "named": true
+        },
+        {
+          "type": "parens",
+          "named": true
+        },
+        {
+          "type": "record",
+          "named": true
+        },
+        {
+          "type": "regexp",
+          "named": true
+        },
+        {
+          "type": "set",
+          "named": true
+        },
+        {
+          "type": "simple_fun",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
+          "named": true
+        },
+        {
+          "type": "time_predicate",
+          "named": true
+        },
+        {
+          "type": "try",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "var",
+          "named": true
+        },
+        {
+          "type": "while",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "try_finally",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "and",
+          "named": true
+        },
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "app",
+          "named": true
+        },
+        {
+          "type": "append",
+          "named": true
+        },
+        {
+          "type": "assoc",
+          "named": true
+        },
+        {
+          "type": "binding",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "bool",
+          "named": true
+        },
+        {
+          "type": "coalesce",
+          "named": true
+        },
+        {
+          "type": "coerce",
+          "named": true
+        },
+        {
+          "type": "def",
+          "named": true
+        },
+        {
+          "type": "encoder",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "for",
+          "named": true
+        },
+        {
+          "type": "get",
+          "named": true
+        },
+        {
+          "type": "if",
+          "named": true
+        },
+        {
+          "type": "if_def",
+          "named": true
+        },
+        {
+          "type": "if_encoder",
+          "named": true
+        },
+        {
+          "type": "if_version",
+          "named": true
+        },
+        {
+          "type": "include",
+          "named": true
+        },
+        {
+          "type": "infix",
+          "named": true
+        },
+        {
+          "type": "inline_if",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "invoke",
+          "named": true
+        },
+        {
+          "type": "let",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "not",
+          "named": true
+        },
+        {
+          "type": "or",
+          "named": true
+        },
+        {
+          "type": "parens",
+          "named": true
+        },
+        {
+          "type": "record",
+          "named": true
+        },
+        {
+          "type": "regexp",
+          "named": true
+        },
+        {
+          "type": "set",
+          "named": true
+        },
+        {
+          "type": "simple_fun",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_interval",
+          "named": true
+        },
+        {
+          "type": "time_predicate",
+          "named": true
+        },
+        {
+          "type": "try",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "var",
+          "named": true
+        },
+        {
+          "type": "while",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "try_finqlly",
     "named": true,
     "fields": {},
     "children": {
@@ -9124,11 +9474,19 @@
     "named": true
   },
   {
+    "type": "end",
+    "named": false
+  },
+  {
     "type": "eval",
     "named": false
   },
   {
     "type": "false",
+    "named": false
+  },
+  {
+    "type": "finally",
     "named": false
   },
   {

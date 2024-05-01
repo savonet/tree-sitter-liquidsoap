@@ -6114,6 +6114,41 @@
             },
             {
               "type": "STRING",
+              "value": "finally"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_exprs"
+              },
+              "named": true,
+              "value": "try_finqlly"
+            },
+            {
+              "type": "STRING",
+              "value": "end"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "try"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_exprs"
+              },
+              "named": true,
+              "value": "try_body"
+            },
+            {
+              "type": "STRING",
               "value": "catch"
             },
             {
@@ -6148,6 +6183,32 @@
               },
               "named": true,
               "value": "try_do"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "finally"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_exprs"
+                      },
+                      "named": true,
+                      "value": "try_finally"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "ALIAS",
@@ -6200,6 +6261,32 @@
               },
               "named": true,
               "value": "try_do"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "finally"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_exprs"
+                      },
+                      "named": true,
+                      "value": "try_finally"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "ALIAS",
