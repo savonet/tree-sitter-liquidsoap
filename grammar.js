@@ -124,8 +124,8 @@ module.exports = grammar({
     float: $ =>
       choice(
         $._float_no_lbra,
-        /-?([\d][\d_]*)?\.[\d][\d_]*/,
-        seq($._float_exp, /[\d][\d_]*/)
+        /-?([\d][\d_]*)?\.[\d][\d_]*([eE][-+]?[\d][\d_]*)?/,
+        seq($._float_exp, /[\d][\d_]*/),
       ),
 
     version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
