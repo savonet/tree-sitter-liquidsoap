@@ -243,6 +243,10 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       SKIP(IN_FLOAT_NO_LBRA);
     }
 
+    if (lookahead == 'e' || lookahead == 'E') {
+      ADVANCE(IN_FLOAT_EXP);
+    }
+
     if (lookahead == '{') {
       config->no_uminus = 1;
       END_STATE();
