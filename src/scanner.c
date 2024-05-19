@@ -160,9 +160,8 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (!valid_symbols[VAR] && !valid_symbols[LBRA] && !valid_symbols[LPAR] &&
       !valid_symbols[NO_EXTERNAL] && !valid_symbols[FLOAT_NO_LBRA] &&
-      !valid_symbols[FLOAT_EXP] &&
-      !valid_symbols[PARSE_DECORATOR] && !valid_symbols[COMMENT] &&
-      !valid_symbols[UMINUS]) {
+      !valid_symbols[FLOAT_EXP] && !valid_symbols[PARSE_DECORATOR] &&
+      !valid_symbols[COMMENT] && !valid_symbols[UMINUS]) {
     RESET_CONFIG(config);
     return 0;
   }
