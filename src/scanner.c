@@ -22,6 +22,7 @@ enum State {
   IN_PARSE_DECORATOR,
   POST_PARSE_DECORATOR,
   IN_FLOAT,
+  IN_FLOAT_NO_LBRA_OR_EXP,
   IN_FLOAT_NO_LBRA,
   IN_FLOAT_EXP,
   IN_COMMENT_START,
@@ -229,7 +230,7 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       ADVANCE(IN_FLOAT);
 
     if (lookahead == '.')
-      ADVANCE(IN_FLOAT_NO_LBRA);
+      ADVANCE(IN_FLOAT_NO_LBRA_OR_EXP);
 
     if (lookahead == 'e' || lookahead == 'E') {
       ADVANCE(IN_FLOAT_EXP);
@@ -238,13 +239,14 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     config->no_uminus = 1;
     END_STATE();
 
+  case IN_FLOAT_NO_LBRA_OR_EXP:
+    if (lookahead == 'e' || lookahead == 'E') {
+      ADVANCE(IN_FLOAT_EXP);
+    }
+
   case IN_FLOAT_NO_LBRA:
     if (is_space(&config->lookahead)) {
       SKIP(IN_FLOAT_NO_LBRA);
-    }
-
-    if (lookahead == 'e' || lookahead == 'E') {
-      ADVANCE(IN_FLOAT_EXP);
     }
 
     if (lookahead == '{') {
