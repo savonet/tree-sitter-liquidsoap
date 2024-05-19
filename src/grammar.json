@@ -223,6 +223,19 @@
         {
           "type": "PATTERN",
           "value": "-?([\\d][\\d_]*)?\\.[\\d][\\d_]*"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_float_exp"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[\\d][\\d_]*"
+            }
+          ]
         }
       ]
     },
@@ -6705,6 +6718,10 @@
     {
       "type": "SYMBOL",
       "name": "_float_no_lbra"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_float_exp"
     },
     {
       "type": "SYMBOL",

@@ -8,6 +8,7 @@ enum TokenType {
   LPAR,
   LBRA,
   FLOAT_NO_LBRA,
+  FLOAT_EXP,
   NO_EXTERNAL,
   PARSE_DECORATOR,
   COMMENT,
@@ -22,6 +23,7 @@ enum State {
   POST_PARSE_DECORATOR,
   IN_FLOAT,
   IN_FLOAT_NO_LBRA,
+  IN_FLOAT_EXP,
   IN_COMMENT_START,
   IN_INLINE_COMMENT,
   IN_INLINE_COMMENT_CONTINUE,
@@ -157,6 +159,7 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (!valid_symbols[VAR] && !valid_symbols[LBRA] && !valid_symbols[LPAR] &&
       !valid_symbols[NO_EXTERNAL] && !valid_symbols[FLOAT_NO_LBRA] &&
+      !valid_symbols[FLOAT_EXP] &&
       !valid_symbols[PARSE_DECORATOR] && !valid_symbols[COMMENT] &&
       !valid_symbols[UMINUS]) {
     RESET_CONFIG(config);
@@ -228,6 +231,10 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     if (lookahead == '.')
       ADVANCE(IN_FLOAT_NO_LBRA);
 
+    if (lookahead == 'e' || lookahead == 'E') {
+      ADVANCE(IN_FLOAT_EXP);
+    }
+
     config->no_uminus = 1;
     END_STATE();
 
@@ -247,6 +254,19 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     }
 
     ACCEPT_TOKEN(FLOAT_NO_LBRA);
+    config->no_uminus = 1;
+    END_STATE();
+
+  case IN_FLOAT_EXP:
+    if (is_space(&config->lookahead)) {
+      SKIP(IN_FLOAT_EXP);
+    }
+
+    if (lookahead == '+' || lookahead == '-') {
+      ADVANCE(IN_FLOAT_EXP);
+    }
+
+    ACCEPT_TOKEN(FLOAT_EXP);
     config->no_uminus = 1;
     END_STATE();
 

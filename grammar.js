@@ -84,6 +84,7 @@ module.exports = grammar({
     $._var_lpar,
     $._var_lbra,
     $._float_no_lbra,
+    $._float_exp,
     $._no_external,
     $._parse_decorator,
     $.comment,
@@ -120,7 +121,12 @@ module.exports = grammar({
 
     integer: $ =>
       token(choice(/-?[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
-    float: $ => choice($._float_no_lbra, /-?([\d][\d_]*)?\.[\d][\d_]*/),
+    float: $ =>
+      choice(
+        $._float_no_lbra,
+        /-?([\d][\d_]*)?\.[\d][\d_]*/,
+        seq($._float_exp, /[\d][\d_]*/)
+      ),
 
     version: $ => /[\d][\d_]*\.[\d][\d_]*\.[\d][\d_]*/,
 
@@ -737,12 +743,12 @@ module.exports = grammar({
       prec.left("coalesce", seq($._expr, alias("??", $.op), $._expr)),
     try: $ =>
       choice(
-          seq(
+        seq(
           "try",
           alias($._exprs, $.try_body),
           "finally",
           alias($._exprs, $.try_finqlly),
-          "end"
+          "end",
         ),
         seq(
           "try",
