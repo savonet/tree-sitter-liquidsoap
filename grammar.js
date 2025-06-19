@@ -253,10 +253,22 @@ module.exports = grammar({
     labeled_argument: $ =>
       choice(
         seq("~", field("label", $.var), optional($._opt)),
+        seq("~", field("label", $.var), ":", $._optvar, optional($._opt)),
         seq(
           "~",
           "(",
           field("label", $.var),
+          ":",
+          $.type,
+          ")",
+          optional($._opt),
+        ),
+        seq(
+          "~",
+          field("label", $.var),
+          ":",
+          "(",
+          $._optvar,
           ":",
           $.type,
           ")",

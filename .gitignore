@@ -4,4 +4,7 @@ pnpm-lock.yaml
 build/
 tests/liquidsoap
 *.o
+*.a
+*.pc
+*.dylib
 prebuilds/
