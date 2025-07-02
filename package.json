@@ -7,6 +7,7 @@
   "scripts": {
     "test": "./tests/run.sh",
     "install": "node-gyp-build",
+    "generate": "tree-sitter generate",
     "prebuildify": "prebuildify --napi --strip"
   },
   "author": "",
