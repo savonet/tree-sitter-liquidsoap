@@ -240,7 +240,10 @@ module.exports = grammar({
       ),
 
     arglist: $ =>
-      seq("(", optional(seq(repeat(seq($._arg, ",")), $._arg)), ")"),
+      choice(
+        seq("(", seq(repeat(seq($._arg, ",")), $._arg, optional(",")), ")"),
+        seq("(", ")"),
+      ),
 
     _opt: $ => seq("=", $._expr),
 
@@ -682,21 +685,16 @@ module.exports = grammar({
         ),
       ),
 
+    _record_definition: $ =>
+      choice(seq("{", $._record, optional(","), "}"), seq("{", "}")),
+
     record: $ =>
       choice(
         prec.left(
           "dot",
-          seq(
-            field("base", $._expr),
-            ".",
-            "{",
-            optional($._record),
-            optional(","),
-            "}",
-          ),
+          seq(field("base", $._expr), ".", $._record_definition),
         ),
-        seq("{", $._record, optional(","), "}"),
-        seq("{", "}"),
+        $._record_definition,
       ),
 
     coerce: $ => seq("(", $._expr, alias(":", $.op), $.type, ")"),
