@@ -2274,7 +2274,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_optvar"
+              "name": "_pattern"
             },
             {
               "type": "CHOICE",
@@ -2299,7 +2299,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_optvar"
+              "name": "_pattern"
             },
             {
               "type": "STRING",
@@ -2382,7 +2382,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_optvar"
+              "name": "_pattern"
             },
             {
               "type": "CHOICE",
@@ -2468,7 +2468,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_optvar"
+              "name": "_pattern"
             },
             {
               "type": "STRING",

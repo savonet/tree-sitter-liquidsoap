@@ -249,14 +249,14 @@ module.exports = grammar({
 
     anonymous_argument: $ =>
       choice(
-        seq($._optvar, optional($._opt)),
-        seq("(", $._optvar, ":", $.type, ")", optional($._opt)),
+        seq($._pattern, optional($._opt)),
+        seq("(", $._pattern, ":", $.type, ")", optional($._opt)),
       ),
 
     labeled_argument: $ =>
       choice(
         seq("~", field("label", $.var), optional($._opt)),
-        seq("~", field("label", $.var), ":", $._optvar, optional($._opt)),
+        seq("~", field("label", $.var), ":", $._pattern, optional($._opt)),
         seq(
           "~",
           "(",
@@ -271,7 +271,7 @@ module.exports = grammar({
           field("label", $.var),
           ":",
           "(",
-          $._optvar,
+          $._pattern,
           ":",
           $.type,
           ")",
