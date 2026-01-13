@@ -120,7 +120,14 @@ module.exports = grammar({
     _optvar: $ => choice("_", $.var),
 
     integer: $ =>
-      token(choice(/-?[\d][\d_]*/, /0[xX][\da-fA-F_]+/, /0[oO][0-7_]+/)),
+      token(
+        choice(
+          /-?[\d][\d_]*/,
+          /0[xX][\da-fA-F_]+/,
+          /0[oO][0-7_]+/,
+          /0[bB][01][01_]*/,
+        ),
+      ),
     float: $ =>
       choice(
         $._float_no_lbra,

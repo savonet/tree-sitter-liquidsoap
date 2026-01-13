@@ -210,6 +210,10 @@
           {
             "type": "PATTERN",
             "value": "0[oO][0-7_]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "0[bB][01][01_]*"
           }
         ]
       }

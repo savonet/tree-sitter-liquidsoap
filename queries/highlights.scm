@@ -61,6 +61,7 @@
 (integer) @number
 (float) @number
 (bool) @boolean
+((var) @constant.builtin (#eq? @constant.builtin "null"))
 (comment) @comment
 (regexp) @string.regex
 (type) @type
