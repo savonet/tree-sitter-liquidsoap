@@ -7633,6 +7633,10 @@
           "named": true
         },
         {
+          "type": "type",
+          "named": true
+        },
+        {
           "type": "var",
           "named": true
         }
