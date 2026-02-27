@@ -488,6 +488,7 @@ module.exports = grammar({
     source_type: $ =>
       choice(
         seq($.varlpar, "(", ")"),
+        seq($.varlpar, "(", $.type, ")"),
         seq($.varlpar, "(", $.source_tracks_type, ")"),
       ),
 
