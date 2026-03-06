@@ -89,6 +89,7 @@ module.exports = grammar({
     $._parse_decorator,
     $.comment,
     $._uminus,
+    $._raw_string,
   ],
 
   rules: {
@@ -818,6 +819,7 @@ module.exports = grammar({
         $.float,
         $._minus,
         $.string,
+        alias($._raw_string, $.string),
         $.var,
         $.list,
         $.get,

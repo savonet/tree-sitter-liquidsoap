@@ -12,7 +12,8 @@ enum TokenType {
   NO_EXTERNAL,
   PARSE_DECORATOR,
   COMMENT,
-  UMINUS
+  UMINUS,
+  RAW_STRING
 };
 
 enum State {
@@ -33,6 +34,10 @@ enum State {
   IN_MULTILINE_COMMENT_END,
   IS_UMINUS,
   IS_COMMENT,
+  IN_RAW_STRING_ID,
+  IN_RAW_STRING_BODY,
+  IN_RAW_STRING_MAYBE_CLOSE,
+  IN_RAW_STRING_DONE,
 };
 
 typedef Array(int32_t) ustring_t;
@@ -40,16 +45,20 @@ typedef Array(int32_t) ustring_t;
 typedef struct config {
   int no_uminus;
   int comment_level;
+  int raw_string_close_pos;
   ustring_t lookahead;
   ustring_t parser_decorator;
+  ustring_t raw_string_id;
 } config_t;
 
 #define RESET_CONFIG(config)                                                   \
   {                                                                            \
     config->no_uminus = 0;                                                     \
     config->comment_level = 0;                                                 \
+    config->raw_string_close_pos = 0;                                          \
     array_clear(&config->lookahead);                                           \
     array_clear(&config->parser_decorator);                                    \
+    array_clear(&config->raw_string_id);                                       \
   }
 
 #define SPACE_UCHAR 0x20
@@ -59,8 +68,21 @@ typedef struct config {
 #define LAST_NUMBER_UCHAR 0x39
 #define FIRST_ALPHA_UCHAR 0x61
 #define LAST_ALPHA_UCHAR 0x7a
+#define UNDERSCORE_UCHAR 0x5f
 #define DOT_UCHAR 0x2e
 #define PARSE_DECORATOR_REX L"[a-z.]"
+
+static enum TokenType all_tokens[] = {VAR, LBRA, LPAR, NO_EXTERNAL, FLOAT_NO_LBRA,
+                                     FLOAT_EXP, PARSE_DECORATOR, COMMENT, UMINUS,
+                                     RAW_STRING};
+
+static inline int any_valid_symbol(const bool *valid_symbols) {
+  for (size_t i = 0; i < sizeof(all_tokens) / sizeof(all_tokens[0]); i++) {
+    if (valid_symbols[all_tokens[i]])
+      return 1;
+  }
+  return 0;
+}
 
 static inline int is_space(ustring_t *s) {
   uint32_t i;
@@ -127,10 +149,16 @@ static inline int ustring_equal(ustring_t *s, char *t) {
   return 1;
 }
 
+static inline int is_raw_string_id_char(int32_t c) {
+  return (c >= FIRST_ALPHA_UCHAR && c <= LAST_ALPHA_UCHAR) ||
+         c == UNDERSCORE_UCHAR;
+}
+
 void *tree_sitter_liquidsoap_external_scanner_create() {
   config_t *config = ts_malloc(sizeof(config_t));
   array_init(&config->lookahead);
   array_init(&config->parser_decorator);
+  array_init(&config->raw_string_id);
   RESET_CONFIG(config);
   return config;
 }
@@ -158,10 +186,7 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
   config_t *config = (config_t *)payload;
   array_clear(&config->parser_decorator);
 
-  if (!valid_symbols[VAR] && !valid_symbols[LBRA] && !valid_symbols[LPAR] &&
-      !valid_symbols[NO_EXTERNAL] && !valid_symbols[FLOAT_NO_LBRA] &&
-      !valid_symbols[FLOAT_EXP] && !valid_symbols[PARSE_DECORATOR] &&
-      !valid_symbols[COMMENT] && !valid_symbols[UMINUS]) {
+  if (!any_valid_symbol(valid_symbols)) {
     RESET_CONFIG(config);
     return 0;
   }
@@ -174,6 +199,9 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (valid_symbols[PARSE_DECORATOR])
     state = PRE_PARSE_DECORATOR;
+
+  if (valid_symbols[RAW_STRING])
+    state = START;
 
   START_LEXER();
   eof = lexer->eof(lexer);
@@ -191,6 +219,12 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
   case START:
     if (is_skip(&config->lookahead))
       SKIP(START);
+
+    if (valid_symbols[RAW_STRING] && lookahead == '{') {
+      array_clear(&config->raw_string_id);
+      config->raw_string_close_pos = 0;
+      ADVANCE(IN_RAW_STRING_ID);
+    }
 
     if (is_number(&config->lookahead)) {
       config->no_uminus = 1;
@@ -219,6 +253,58 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     }
 
     RESET_CONFIG(config);
+    END_STATE();
+
+  case IN_RAW_STRING_ID:
+    if (is_raw_string_id_char(lookahead)) {
+      array_push(&config->raw_string_id, lookahead);
+      ADVANCE(IN_RAW_STRING_ID);
+    }
+    if (lookahead == '|') {
+      ADVANCE(IN_RAW_STRING_BODY);
+    }
+    /* Not a raw string (e.g. simple_fun `{expr}`): bail out */
+    RESET_CONFIG(config);
+    END_STATE();
+
+  case IN_RAW_STRING_BODY:
+    if (eof) {
+      RESET_CONFIG(config);
+      END_STATE();
+    }
+    if (lookahead == '|') {
+      config->raw_string_close_pos = 0;
+      ADVANCE(IN_RAW_STRING_MAYBE_CLOSE);
+    }
+    ADVANCE(IN_RAW_STRING_BODY);
+
+  case IN_RAW_STRING_MAYBE_CLOSE:
+    if (eof) {
+      RESET_CONFIG(config);
+      END_STATE();
+    }
+    /* Check if we've matched the full id and now see '}' */
+    if (config->raw_string_close_pos == (int)config->raw_string_id.size &&
+        lookahead == '}') {
+      ADVANCE(IN_RAW_STRING_DONE);
+    }
+    /* Continue matching the id */
+    if (config->raw_string_close_pos < (int)config->raw_string_id.size &&
+        lookahead == *array_get(&config->raw_string_id,
+                                config->raw_string_close_pos)) {
+      config->raw_string_close_pos++;
+      ADVANCE(IN_RAW_STRING_MAYBE_CLOSE);
+    }
+    /* Failed close attempt; current char might start a new one */
+    config->raw_string_close_pos = 0;
+    if (lookahead == '|') {
+      ADVANCE(IN_RAW_STRING_MAYBE_CLOSE);
+    }
+    ADVANCE(IN_RAW_STRING_BODY);
+
+  case IN_RAW_STRING_DONE:
+    ACCEPT_TOKEN(RAW_STRING);
+    config->no_uminus = 1;
     END_STATE();
 
   case IN_FLOAT:

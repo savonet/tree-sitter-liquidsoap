@@ -6627,6 +6627,15 @@
           "name": "string"
         },
         {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_raw_string"
+          },
+          "named": true,
+          "value": "string"
+        },
+        {
           "type": "SYMBOL",
           "name": "var"
         },
@@ -6857,6 +6866,10 @@
     {
       "type": "SYMBOL",
       "name": "_uminus"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_raw_string"
     }
   ],
   "inline": [
