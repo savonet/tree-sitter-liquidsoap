@@ -123,6 +123,10 @@ module.exports = grammar({
     _varlpar: $ => seq($._var_lit, $._var_lpar),
     varlpar: $ => alias($._varlpar, $.var),
 
+    // `def _(x) = ... end`: an anonymous function name. `_var_lit` does not
+    // match a bare `_`, which is the wildcard token, so it needs its own arm.
+    underscore_lpar: $ => alias(seq("_", $._var_lpar), $.var),
+
     _varlbra: $ => seq($._var_lit, $._var_lbra),
     varlbra: $ => alias($._varlbra, $.var),
 
@@ -132,7 +136,10 @@ module.exports = grammar({
 
     _bin3: $ => token(choice("/", "*.", "/.", "mod", "*")),
 
-    _optvar: $ => choice("_", $.var),
+    // `_` gets the same zero-width lookahead as a variable: the scanner only
+    // emits `_var` when the next character is not `(` or `[`, which is what
+    // keeps `def _(x) = ... end` (a function) apart from `def _ = ... end`.
+    _optvar: $ => choice(alias(seq("_", $._var), $.var), $.var),
 
     integer: $ =>
       token(
@@ -357,7 +364,7 @@ module.exports = grammar({
         seq(
           $._def,
           seq(
-            field("defined", choice($.subfield_lpar, $.varlpar)),
+            field("defined", choice($.subfield_lpar, $.varlpar, $.underscore_lpar)),
             field("arguments", $.arglist),
           ),
           optional("="),
@@ -477,7 +484,7 @@ module.exports = grammar({
         $._record_spread_pattern,
         $._record_pattern,
         seq($.var, ".", $._record_pattern),
-        seq("_", ".", $._record_pattern),
+        seq(alias(seq("_", $._var), $.var), ".", $._record_pattern),
         seq($.tuple_pattern, ".", $._record_pattern),
         seq($.list_pattern, ".", $._record_pattern),
       ),
