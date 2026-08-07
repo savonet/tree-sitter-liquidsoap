@@ -163,7 +163,11 @@ void *tree_sitter_liquidsoap_external_scanner_create() {
   return config;
 }
 
-void tree_sitter_liquidsoap_external_scanner_destroy(void *config) {
+void tree_sitter_liquidsoap_external_scanner_destroy(void *payload) {
+  config_t *config = (config_t *)payload;
+  array_delete(&config->lookahead);
+  array_delete(&config->parser_decorator);
+  array_delete(&config->raw_string_id);
   ts_free(config);
 }
 
