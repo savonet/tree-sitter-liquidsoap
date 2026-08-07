@@ -1112,15 +1112,53 @@
     "named": true,
     "fields": {
       "defined": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
           {
             "type": "_",
             "named": false
           },
           {
+            "type": "list_pattern",
+            "named": true
+          },
+          {
+            "type": "meth_pattern",
+            "named": true
+          },
+          {
+            "type": "subfield",
+            "named": true
+          },
+          {
+            "type": "tuple_pattern",
+            "named": true
+          },
+          {
             "type": "var",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
             "named": true
           }
         ]

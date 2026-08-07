@@ -79,6 +79,20 @@ module.exports = grammar({
 
   extras: $ => [$.comment, /[\p{White_Space}\r\t]+/u],
 
+  // A binding's left-hand side and an expression share a prefix -- `(a, b)` is
+  // both a tuple and a tuple pattern -- and which one it is only becomes clear
+  // at the `=`. Tree-sitter explores both, so the ambiguity is declared rather
+  // than worked around.
+  conflicts: $ => [
+    [$.meth_pattern, $.subfield, $._expr],
+    [$.tuple_pattern, $.tuple],
+    [$._optvar, $._expr],
+    [$.meth_pattern, $._expr],
+    [$.spread, $._inner_list_spread],
+    [$._meth_pattern_el, $._expr],
+    [$._record_pattern, $._record_definition],
+  ],
+
   externals: $ => [
     $._var,
     $._var_lpar,
@@ -400,8 +414,21 @@ module.exports = grammar({
 
     _explicit_binding: $ => choice($.let, $.def),
 
+    // A bare binding takes the same targets as `let`: a variable, a field
+    // path, a destructuring pattern or a type annotation.
     binding: $ =>
-      seq(field("defined", $._optvar), "=", alias($._expr, $.definition)),
+      seq(
+        field(
+          "defined",
+          choice(
+            $._pattern,
+            $.subfield,
+            seq("(", $._pattern, ":", field("type", $.type), ")"),
+          ),
+        ),
+        "=",
+        alias($._expr, $.definition),
+      ),
 
     _binding: $ => prec("binding", choice($._explicit_binding, $.binding)),
 
