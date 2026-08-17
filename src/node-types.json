@@ -323,7 +323,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "and",
@@ -1112,15 +1112,49 @@
     "named": true,
     "fields": {
       "defined": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "_",
+            "type": "(",
             "named": false
           },
           {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "list_pattern",
+            "named": true
+          },
+          {
+            "type": "meth_pattern",
+            "named": true
+          },
+          {
+            "type": "subfield",
+            "named": true
+          },
+          {
+            "type": "tuple_pattern",
+            "named": true
+          },
+          {
             "type": "var",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
             "named": true
           }
         ]
@@ -1719,15 +1753,15 @@
         ]
       },
       "defined": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "_",
-            "named": false
+            "type": "subfield",
+            "named": true
           },
           {
-            "type": "subfield",
+            "type": "underscore_lpar",
             "named": true
           },
           {
@@ -3157,8 +3191,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "var",
@@ -5410,13 +5444,9 @@
     "named": true,
     "fields": {
       "defined": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
-          {
-            "type": "_",
-            "named": false
-          },
           {
             "type": "list_pattern",
             "named": true
@@ -8004,13 +8034,9 @@
     "named": true,
     "fields": {
       "catch": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
-          {
-            "type": "_",
-            "named": false
-          },
           {
             "type": "var",
             "named": true
@@ -8968,6 +8994,21 @@
           "type": "type",
           "named": true
         },
+        {
+          "type": "var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "underscore_lpar",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
         {
           "type": "var",
           "named": true

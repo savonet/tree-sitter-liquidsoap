@@ -63,6 +63,24 @@
       "named": true,
       "value": "var"
     },
+    "underscore_lpar": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "_"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_var_lpar"
+          }
+        ]
+      },
+      "named": true,
+      "value": "var"
+    },
     "_varlbra": {
       "type": "SEQ",
       "members": [
@@ -185,8 +203,22 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "_"
+          "type": "ALIAS",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "_"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_var"
+              }
+            ]
+          },
+          "named": true,
+          "value": "var"
         },
         {
           "type": "SYMBOL",
@@ -2947,6 +2979,10 @@
                       {
                         "type": "SYMBOL",
                         "name": "varlpar"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "underscore_lpar"
                       }
                     ]
                   }
@@ -3285,8 +3321,46 @@
           "type": "FIELD",
           "name": "defined",
           "content": {
-            "type": "SYMBOL",
-            "name": "_optvar"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_pattern"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "subfield"
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "("
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_pattern"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ":"
+                  },
+                  {
+                    "type": "FIELD",
+                    "name": "type",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "type"
+                    }
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ")"
+                  }
+                ]
+              }
+            ]
           }
         },
         {
@@ -3678,8 +3752,22 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "_"
+              "type": "ALIAS",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "_"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_var"
+                  }
+                ]
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
@@ -6753,7 +6841,37 @@
       "flags": "u"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "meth_pattern",
+      "subfield",
+      "_expr"
+    ],
+    [
+      "tuple_pattern",
+      "tuple"
+    ],
+    [
+      "_optvar",
+      "_expr"
+    ],
+    [
+      "meth_pattern",
+      "_expr"
+    ],
+    [
+      "spread",
+      "_inner_list_spread"
+    ],
+    [
+      "_meth_pattern_el",
+      "_expr"
+    ],
+    [
+      "_record_pattern",
+      "_record_definition"
+    ]
+  ],
   "precedences": [
     [
       {

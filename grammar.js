@@ -79,6 +79,20 @@ module.exports = grammar({
 
   extras: $ => [$.comment, /[\p{White_Space}\r\t]+/u],
 
+  // A binding's left-hand side and an expression share a prefix -- `(a, b)` is
+  // both a tuple and a tuple pattern -- and which one it is only becomes clear
+  // at the `=`. Tree-sitter explores both, so the ambiguity is declared rather
+  // than worked around.
+  conflicts: $ => [
+    [$.meth_pattern, $.subfield, $._expr],
+    [$.tuple_pattern, $.tuple],
+    [$._optvar, $._expr],
+    [$.meth_pattern, $._expr],
+    [$.spread, $._inner_list_spread],
+    [$._meth_pattern_el, $._expr],
+    [$._record_pattern, $._record_definition],
+  ],
+
   externals: $ => [
     $._var,
     $._var_lpar,
@@ -109,6 +123,10 @@ module.exports = grammar({
     _varlpar: $ => seq($._var_lit, $._var_lpar),
     varlpar: $ => alias($._varlpar, $.var),
 
+    // `def _(x) = ... end`: an anonymous function name. `_var_lit` does not
+    // match a bare `_`, which is the wildcard token, so it needs its own arm.
+    underscore_lpar: $ => alias(seq("_", $._var_lpar), $.var),
+
     _varlbra: $ => seq($._var_lit, $._var_lbra),
     varlbra: $ => alias($._varlbra, $.var),
 
@@ -118,7 +136,10 @@ module.exports = grammar({
 
     _bin3: $ => token(choice("/", "*.", "/.", "mod", "*")),
 
-    _optvar: $ => choice("_", $.var),
+    // `_` gets the same zero-width lookahead as a variable: the scanner only
+    // emits `_var` when the next character is not `(` or `[`, which is what
+    // keeps `def _(x) = ... end` (a function) apart from `def _ = ... end`.
+    _optvar: $ => choice(alias(seq("_", $._var), $.var), $.var),
 
     integer: $ =>
       token(
@@ -343,7 +364,7 @@ module.exports = grammar({
         seq(
           $._def,
           seq(
-            field("defined", choice($.subfield_lpar, $.varlpar)),
+            field("defined", choice($.subfield_lpar, $.varlpar, $.underscore_lpar)),
             field("arguments", $.arglist),
           ),
           optional("="),
@@ -400,8 +421,21 @@ module.exports = grammar({
 
     _explicit_binding: $ => choice($.let, $.def),
 
+    // A bare binding takes the same targets as `let`: a variable, a field
+    // path, a destructuring pattern or a type annotation.
     binding: $ =>
-      seq(field("defined", $._optvar), "=", alias($._expr, $.definition)),
+      seq(
+        field(
+          "defined",
+          choice(
+            $._pattern,
+            $.subfield,
+            seq("(", $._pattern, ":", field("type", $.type), ")"),
+          ),
+        ),
+        "=",
+        alias($._expr, $.definition),
+      ),
 
     _binding: $ => prec("binding", choice($._explicit_binding, $.binding)),
 
@@ -450,7 +484,7 @@ module.exports = grammar({
         $._record_spread_pattern,
         $._record_pattern,
         seq($.var, ".", $._record_pattern),
-        seq("_", ".", $._record_pattern),
+        seq(alias(seq("_", $._var), $.var), ".", $._record_pattern),
         seq($.tuple_pattern, ".", $._record_pattern),
         seq($.list_pattern, ".", $._record_pattern),
       ),

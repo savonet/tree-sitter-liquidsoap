@@ -14,7 +14,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Install node
         uses: actions/setup-node@v3
-      - name: Run tests
+      - name: Install dependencies
+        run: npm install
+      # src/parser.c is generated but checked in, so a grammar.js change that
+      # was not regenerated would otherwise pass every other check.
+      - name: Check generated files are up to date
         run: |
-          npm install
-          ./tests/run.sh
+          npm exec tree-sitter -- generate
+          git diff --exit-code -- src/
+      - name: Run tests
+        run: ./tests/run.sh
