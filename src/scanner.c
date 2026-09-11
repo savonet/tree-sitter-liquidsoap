@@ -22,6 +22,7 @@ enum State {
   PRE_PARSE_DECORATOR,
   IN_PARSE_DECORATOR,
   POST_PARSE_DECORATOR,
+  IN_MINUS,
   IN_FLOAT,
   IN_FLOAT_NO_LBRA_OR_EXP,
   IN_FLOAT_NO_LBRA,
@@ -32,7 +33,6 @@ enum State {
   IN_INLINE_COMMENT_END,
   IN_MULTILINE_COMMENT,
   IN_MULTILINE_COMMENT_END,
-  IS_UMINUS,
   IS_COMMENT,
   IN_RAW_STRING_ID,
   IN_RAW_STRING_BODY,
@@ -249,15 +249,12 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       ADVANCE(IN_COMMENT_START);
 
     if (lookahead == '-') {
-      if (config->no_uminus) {
-        ADVANCE(IN_FLOAT);
-      } else {
-        ADVANCE(IS_UMINUS);
-      }
+      ADVANCE(IN_MINUS);
     }
 
     RESET_CONFIG(config);
     END_STATE();
+
 
   case IN_RAW_STRING_ID:
     if (is_raw_string_id_char(lookahead)) {
@@ -310,6 +307,20 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
     ACCEPT_TOKEN(RAW_STRING);
     config->no_uminus = 1;
     END_STATE();
+
+  case IN_MINUS:
+    /* "->" is the function arrow, lexed by the parser: an operand follows it,
+       so the minus after it is a sign whatever came before the arrow. */
+    if (lookahead == '>') {
+      config->no_uminus = 0;
+      END_STATE();
+    }
+
+    if (!config->no_uminus) {
+      ACCEPT_TOKEN(UMINUS);
+      RESET_CONFIG(config);
+      END_STATE();
+    }
 
   case IN_FLOAT:
     if (is_number(&config->lookahead))
@@ -483,10 +494,6 @@ bool tree_sitter_liquidsoap_external_scanner_scan(void *payload, TSLexer *lexer,
       lexer->result_symbol = VAR;
 
     config->no_uminus = 1;
-    END_STATE();
-  case IS_UMINUS:
-    ACCEPT_TOKEN(UMINUS);
-    RESET_CONFIG(config);
     END_STATE();
   case IS_COMMENT:
     ACCEPT_TOKEN(COMMENT);
