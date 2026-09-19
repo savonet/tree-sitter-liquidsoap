@@ -79,6 +79,41 @@ module.exports = grammar({
 
   extras: $ => [$.comment, /[\p{White_Space}\r\t]+/u],
 
+  word: $ => $._var_lit,
+
+  // Liquidsoap's lexer reads these as keywords before it tries a variable, so
+  // they are never variable names. After a `.`, it lexes the whole name at
+  // once, which is why methods such as `x.end` are allowed. `null` is left
+  // out: this grammar parses it as a variable.
+  reserved: {
+    global: $ => [
+      "and",
+      "begin",
+      "catch",
+      "def",
+      "do",
+      "else",
+      "elsif",
+      "end",
+      "false",
+      "finally",
+      "for",
+      "fun",
+      "if",
+      "let",
+      "mod",
+      "not",
+      "open",
+      "or",
+      "then",
+      "to",
+      "true",
+      "try",
+      "while",
+    ],
+    method: $ => [],
+  },
+
   // A binding's left-hand side and an expression share a prefix -- `(a, b)` is
   // both a tuple and a tuple pattern -- and which one it is only becomes clear
   // at the `=`. Tree-sitter explores both, so the ambiguity is declared rather
@@ -120,6 +155,12 @@ module.exports = grammar({
 
     var: $ => seq($._var_lit, $._var),
 
+    // A name after a `.` can be a keyword. Reserved words are a property of the
+    // token, so these repeat the variable rules around `_var_lit`.
+    _method_var: $ => seq(reserved("method", $._var_lit), $._var),
+    _method_varlpar: $ => seq(reserved("method", $._var_lit), $._var_lpar),
+    _method_varlbra: $ => seq(reserved("method", $._var_lit), $._var_lbra),
+
     _varlpar: $ => seq($._var_lit, $._var_lpar),
     varlpar: $ => alias($._varlpar, $.var),
 
@@ -134,7 +175,12 @@ module.exports = grammar({
 
     _bin2: $ => token(choice("+", "%", "^", "+.", "-.", "-")),
 
-    _bin3: $ => token(choice("/", "*.", "/.", "mod", "*")),
+    // `mod` is its own token so that it can be reserved.
+    _bin3: $ =>
+      choice(
+        alias(token(choice("/", "*.", "/.", "*")), $.op),
+        alias("mod", $.op),
+      ),
 
     // `_` gets the same zero-width lookahead as a variable: the scanner only
     // emits `_var` when the next character is not `(` or `[`, which is what
@@ -505,7 +551,7 @@ module.exports = grammar({
           seq("(", optional($.args_type), ")", "->", $.type),
         ),
         seq("{", optional($.record_type), "}"),
-        seq($.type, ".", $.var),
+        seq($.type, ".", alias($._method_var, $.var)),
         seq($.type, ".", "{", optional($.record_type), "}"),
         $.source_type,
       ),
@@ -537,16 +583,29 @@ module.exports = grammar({
     content_type: $ =>
       choice(
         $.var,
-        seq($.var, ".", $.var),
-        seq($.var, ".", $.var, ".", $.var),
-        seq($.varlpar, "(", optional($.content_args_type), ")"),
-        seq($.var, ".", $.varlpar, "(", optional($.content_args_type), ")"),
+        seq($.var, ".", alias($._method_var, $.var)),
         seq(
           $.var,
           ".",
+          alias($._method_var, $.var),
+          ".",
+          alias($._method_var, $.var),
+        ),
+        seq($.varlpar, "(", optional($.content_args_type), ")"),
+        seq(
           $.var,
           ".",
-          $.varlpar,
+          alias($._method_varlpar, $.var),
+          "(",
+          optional($.content_args_type),
+          ")",
+        ),
+        seq(
+          $.var,
+          ".",
+          alias($._method_var, $.var),
+          ".",
+          alias($._method_varlpar, $.var),
           "(",
           optional($.content_args_type),
           ")",
@@ -579,15 +638,19 @@ module.exports = grammar({
     subfield: $ => seq($.var, ".", $._in_subfield),
     _in_subfield: $ =>
       choice(
-        alias($.var, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield),
+        alias(alias($._method_var, $.var), $.method),
+        seq(alias(alias($._method_var, $.var), $.method), ".", $._in_subfield),
       ),
 
     _subfield_lbra: $ => seq($.var, ".", $._in_subfield_lbra),
     _in_subfield_lbra: $ =>
       choice(
-        alias($.varlbra, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield_lbra),
+        alias(alias($._method_varlbra, $.var), $.method),
+        seq(
+          alias(alias($._method_var, $.var), $.method),
+          ".",
+          $._in_subfield_lbra,
+        ),
       ),
 
     subfield_lbra: $ => alias($._subfield_lbra, $.subfield),
@@ -595,8 +658,12 @@ module.exports = grammar({
     _subfield_lpar: $ => seq($.var, ".", $._in_subfield_lpar),
     _in_subfield_lpar: $ =>
       choice(
-        alias($.varlpar, $.method),
-        seq(alias($.var, $.method), ".", $._in_subfield_lpar),
+        alias(alias($._method_varlpar, $.var), $.method),
+        seq(
+          alias(alias($._method_var, $.var), $.method),
+          ".",
+          $._in_subfield_lpar,
+        ),
       ),
 
     subfield_lpar: $ => alias($._subfield_lpar, $.subfield),
@@ -679,9 +746,15 @@ module.exports = grammar({
       choice($._app_list_elem, seq($._app_list_elem, ",", $._app_list)),
 
     method_app: $ =>
-      seq(field("name", $.varlpar), "(", optional($._app_list), ")"),
+      seq(
+        field("name", alias($._method_varlpar, $.var)),
+        "(",
+        optional($._app_list),
+        ")",
+      ),
 
-    _invoked: $ => choice(alias($.var, $.method), $.method_app),
+    _invoked: $ =>
+      choice(alias(alias($._method_var, $.var), $.method), $.method_app),
 
     tuple: $ => seq("(", optional($._inner_tuple), ")"),
 
@@ -757,7 +830,7 @@ module.exports = grammar({
     assoc: $ =>
       choice(
         seq($.varlbra, "[", $._expr, "]"),
-        seq($._expr, ".", $.varlbra, "[", $._expr, "]"),
+        seq($._expr, ".", alias($._method_varlbra, $.var), "[", $._expr, "]"),
       ),
     block: $ => seq("begin", $._exprs, alias("end", "block_end")),
     simple_fun: $ => seq("{", $._simple_fun_body, "}"),
@@ -836,7 +909,7 @@ module.exports = grammar({
       choice(
         prec.left("bin1", seq($._expr, alias($._bin1, $.op), $._expr)),
         prec.left("bin2", seq($._expr, alias($._bin2, $.op), $._expr)),
-        prec.left("bin3", seq($._expr, alias($._bin3, $.op), $._expr)),
+        prec.left("bin3", seq($._expr, $._bin3, $._expr)),
       ),
 
     _expr: $ =>

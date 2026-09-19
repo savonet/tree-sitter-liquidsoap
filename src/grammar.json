@@ -1,6 +1,7 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "liquidsoap",
+  "word": "_var_lit",
   "rules": {
     "source_file": {
       "type": "SYMBOL",
@@ -38,6 +39,57 @@
         {
           "type": "SYMBOL",
           "name": "_var"
+        }
+      ]
+    },
+    "_method_var": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "RESERVED",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_var_lit"
+          },
+          "context_name": "method"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_var"
+        }
+      ]
+    },
+    "_method_varlpar": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "RESERVED",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_var_lit"
+          },
+          "context_name": "method"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_var_lpar"
+        }
+      ]
+    },
+    "_method_varlbra": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "RESERVED",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_var_lit"
+          },
+          "context_name": "method"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_var_lbra"
         }
       ]
     },
@@ -172,32 +224,47 @@
       }
     },
     "_bin3": {
-      "type": "TOKEN",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "/"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "/"
+                },
+                {
+                  "type": "STRING",
+                  "value": "*."
+                },
+                {
+                  "type": "STRING",
+                  "value": "/."
+                },
+                {
+                  "type": "STRING",
+                  "value": "*"
+                }
+              ]
+            }
           },
-          {
-            "type": "STRING",
-            "value": "*."
-          },
-          {
-            "type": "STRING",
-            "value": "/."
-          },
-          {
+          "named": true,
+          "value": "op"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
             "type": "STRING",
             "value": "mod"
           },
-          {
-            "type": "STRING",
-            "value": "*"
-          }
-        ]
-      }
+          "named": true,
+          "value": "op"
+        }
+      ]
     },
     "_optvar": {
       "type": "CHOICE",
@@ -3997,8 +4064,13 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "var"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_var"
+              },
+              "named": true,
+              "value": "var"
             }
           ]
         },
@@ -4297,8 +4369,13 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "var"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_var"
+              },
+              "named": true,
+              "value": "var"
             }
           ]
         },
@@ -4314,16 +4391,26 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "var"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_var"
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "var"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_var"
+              },
+              "named": true,
+              "value": "var"
             }
           ]
         },
@@ -4368,8 +4455,13 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "varlpar"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_varlpar"
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
@@ -4405,16 +4497,26 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "var"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_var"
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "varlpar"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_varlpar"
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
@@ -4688,8 +4790,13 @@
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "var"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_method_var"
+            },
+            "named": true,
+            "value": "var"
           },
           "named": true,
           "value": "method"
@@ -4700,8 +4807,13 @@
             {
               "type": "ALIAS",
               "content": {
-                "type": "SYMBOL",
-                "name": "var"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_method_var"
+                },
+                "named": true,
+                "value": "var"
               },
               "named": true,
               "value": "method"
@@ -4741,8 +4853,13 @@
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "varlbra"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_method_varlbra"
+            },
+            "named": true,
+            "value": "var"
           },
           "named": true,
           "value": "method"
@@ -4753,8 +4870,13 @@
             {
               "type": "ALIAS",
               "content": {
-                "type": "SYMBOL",
-                "name": "var"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_method_var"
+                },
+                "named": true,
+                "value": "var"
               },
               "named": true,
               "value": "method"
@@ -4803,8 +4925,13 @@
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "varlpar"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_method_varlpar"
+            },
+            "named": true,
+            "value": "var"
           },
           "named": true,
           "value": "method"
@@ -4815,8 +4942,13 @@
             {
               "type": "ALIAS",
               "content": {
-                "type": "SYMBOL",
-                "name": "var"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_method_var"
+                },
+                "named": true,
+                "value": "var"
               },
               "named": true,
               "value": "method"
@@ -5501,8 +5633,13 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "varlpar"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_method_varlpar"
+            },
+            "named": true,
+            "value": "var"
           }
         },
         {
@@ -5533,8 +5670,13 @@
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "var"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_method_var"
+            },
+            "named": true,
+            "value": "var"
           },
           "named": true,
           "value": "method"
@@ -6070,8 +6212,13 @@
               "value": "."
             },
             {
-              "type": "SYMBOL",
-              "name": "varlbra"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_method_varlbra"
+              },
+              "named": true,
+              "value": "var"
             },
             {
               "type": "STRING",
@@ -6646,13 +6793,8 @@
                 "name": "_expr"
               },
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_bin3"
-                },
-                "named": true,
-                "value": "op"
+                "type": "SYMBOL",
+                "name": "_bin3"
               },
               {
                 "type": "SYMBOL",
@@ -7000,5 +7142,101 @@
     "_parse_decoration"
   ],
   "supertypes": [],
-  "reserved": {}
+  "reserved": {
+    "global": [
+      {
+        "type": "STRING",
+        "value": "and"
+      },
+      {
+        "type": "STRING",
+        "value": "begin"
+      },
+      {
+        "type": "STRING",
+        "value": "catch"
+      },
+      {
+        "type": "STRING",
+        "value": "def"
+      },
+      {
+        "type": "STRING",
+        "value": "do"
+      },
+      {
+        "type": "STRING",
+        "value": "else"
+      },
+      {
+        "type": "STRING",
+        "value": "elsif"
+      },
+      {
+        "type": "STRING",
+        "value": "end"
+      },
+      {
+        "type": "STRING",
+        "value": "false"
+      },
+      {
+        "type": "STRING",
+        "value": "finally"
+      },
+      {
+        "type": "STRING",
+        "value": "for"
+      },
+      {
+        "type": "STRING",
+        "value": "fun"
+      },
+      {
+        "type": "STRING",
+        "value": "if"
+      },
+      {
+        "type": "STRING",
+        "value": "let"
+      },
+      {
+        "type": "STRING",
+        "value": "mod"
+      },
+      {
+        "type": "STRING",
+        "value": "not"
+      },
+      {
+        "type": "STRING",
+        "value": "open"
+      },
+      {
+        "type": "STRING",
+        "value": "or"
+      },
+      {
+        "type": "STRING",
+        "value": "then"
+      },
+      {
+        "type": "STRING",
+        "value": "to"
+      },
+      {
+        "type": "STRING",
+        "value": "true"
+      },
+      {
+        "type": "STRING",
+        "value": "try"
+      },
+      {
+        "type": "STRING",
+        "value": "while"
+      }
+    ],
+    "method": []
+  }
 }
