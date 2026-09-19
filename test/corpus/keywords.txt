@@ -1,0 +1,81 @@
+================================================================================
+Keywords are allowed as method names
+================================================================================
+
+print(x.end)
+x.for(1)
+y = l.not[0]
+def x.then(a) = a end
+z = x?.do
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (app
+    (var)
+    (anonymous_arg
+      (invoke
+        (var)
+        (method))))
+  (invoke
+    (var)
+    (method_app
+      (var)
+      (anonymous_arg
+        (integer))))
+  (binding
+    (var)
+    (definition
+      (assoc
+        (var)
+        (var)
+        (integer))))
+  (def
+    (subfield
+      (var)
+      (method))
+    (arglist
+      (anonymous_argument
+        (var)))
+    (definition
+      (var)))
+  (binding
+    (var)
+    (definition
+      (invoke
+        (var)
+        (method)))))
+
+================================================================================
+mod is an operator
+================================================================================
+
+x = a mod 2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binding
+    (var)
+    (definition
+      (infix
+        (var)
+        (op)
+        (integer)))))
+
+================================================================================
+end is never a variable
+================================================================================
+
+def f() =
+  amplify(0.5,
+end
+
+--------------------------------------------------------------------------------
+
+(ERROR
+  (var)
+  (arglist)
+  (var)
+  (anonymous_arg
+    (float)))
