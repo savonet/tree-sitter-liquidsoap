@@ -73,9 +73,13 @@ end
 
 --------------------------------------------------------------------------------
 
-(ERROR
-  (var)
-  (arglist)
-  (var)
-  (anonymous_arg
-    (float)))
+(source_file
+  (def
+    (var)
+    (arglist)
+    (definition
+      (app
+        (var)
+        (anonymous_arg
+          (float))
+        (MISSING ")")))))
