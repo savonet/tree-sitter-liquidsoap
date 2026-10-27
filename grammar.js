@@ -219,7 +219,11 @@ module.exports = grammar({
       ),
 
     _encoder_params: $ =>
-      choice($._encoder_param, seq($._encoder_param, ",", $._encoder_params)),
+      choice(
+        $._encoder_param,
+        seq($._encoder_param, ","),
+        seq($._encoder_param, ",", $._encoder_params),
+      ),
 
     encoder: $ =>
       prec.right(
@@ -509,6 +513,7 @@ module.exports = grammar({
     _meth_pattern_list: $ =>
       choice(
         $._meth_pattern_el,
+        seq($._meth_pattern_el, ","),
         seq($._meth_pattern_el, ",", $._meth_pattern_list),
       ),
 
@@ -556,7 +561,8 @@ module.exports = grammar({
         $.source_type,
       ),
 
-    record_type: $ => seq(repeat(seq($.meth_type, ",")), $.meth_type),
+    record_type: $ =>
+      seq(repeat(seq($.meth_type, ",")), $.meth_type, optional(",")),
 
     meth_type: $ =>
       choice(
@@ -743,7 +749,11 @@ module.exports = grammar({
       ),
 
     _app_list: $ =>
-      choice($._app_list_elem, seq($._app_list_elem, ",", $._app_list)),
+      choice(
+        $._app_list_elem,
+        seq($._app_list_elem, ","),
+        seq($._app_list_elem, ",", $._app_list),
+      ),
 
     method_app: $ =>
       seq(

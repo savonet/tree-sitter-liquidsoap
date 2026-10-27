@@ -433,6 +433,19 @@
             {
               "type": "STRING",
               "value": ","
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_encoder_param"
+            },
+            {
+              "type": "STRING",
+              "value": ","
             },
             {
               "type": "SYMBOL",
@@ -3684,6 +3697,19 @@
             {
               "type": "STRING",
               "value": ","
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_meth_pattern_el"
+            },
+            {
+              "type": "STRING",
+              "value": ","
             },
             {
               "type": "SYMBOL",
@@ -4135,6 +4161,18 @@
         {
           "type": "SYMBOL",
           "name": "meth_type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -5606,6 +5644,19 @@
         {
           "type": "SYMBOL",
           "name": "_app_list_elem"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_app_list_elem"
+            },
+            {
+              "type": "STRING",
+              "value": ","
+            }
+          ]
         },
         {
           "type": "SEQ",

@@ -1,0 +1,40 @@
+================================================================================
+Trailing commas
+================================================================================
+
+let json.parse (x:{a:int,}) = "{}"
+print(1,)
+let {a,} = r
+e = %mp3(bitrate=128,)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (let
+    (let_decoration)
+    (var)
+    (type
+      (record_type
+        (meth_type
+          (var)
+          (type
+            (var)))))
+    (definition
+      (string)))
+  (app
+    (var)
+    (anonymous_arg
+      (integer)))
+  (let
+    (meth_pattern
+      (var))
+    (definition
+      (var)))
+  (binding
+    (var)
+    (definition
+      (encoder
+        (encoder_name)
+        (encoder_params
+          (var)
+          (integer))))))
