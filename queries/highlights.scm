@@ -32,6 +32,7 @@
   "%else"
   "%endif"
   "%argsof"
+  "%typeof"
   "%include"
 ] @preproc
 

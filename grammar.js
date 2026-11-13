@@ -559,7 +559,10 @@ module.exports = grammar({
         seq($.type, ".", alias($._method_var, $.var)),
         seq($.type, ".", "{", optional($.record_type), "}"),
         $.source_type,
+        $.typeof,
       ),
+
+    typeof: $ => seq("%typeof", "(", $._expr, ")"),
 
     record_type: $ =>
       seq(repeat(seq($.meth_type, ",")), $.meth_type, optional(",")),
